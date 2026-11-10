@@ -427,7 +427,164 @@
   font: italic .875rem Georgia, serif;
 }
 
+.app-notebook-category-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--note-line);
+}
+
+.app-notebook-category {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 16px;
+}
+
+.app-notebook-category-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--note-line);
+  border-radius: 50%;
+  background: var(--note-soft);
+  color: var(--note-accent);
+}
+
+.app-notebook-category-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-notebook-category-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.app-notebook-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--note-error);
+  border-radius: 6px;
+  background: var(--note-paper);
+  color: var(--note-error);
+  font-size: .8rem;
+}
+
+.app-notebook-delete:hover {
+  background: var(--note-error);
+  color: var(--note-paper);
+}
+
+.app-notebook-delete:focus-visible {
+  outline: 3px solid var(--note-accent);
+  outline-offset: 4px;
+}
+
+.app-notebook-category-back {
+  margin-bottom: 24px;
+}
+
+.app-notebook-category-back .app-notebook-back-link {
+  margin-left: 0;
+  padding-left: 0;
+  gap: 8px;
+}
+
+// The layout contributes 24px of padding on each edge of the viewport.
+.app-notebook.app-notebook-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 48px);
+  height: calc(100dvh - 48px);
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+.app-notebook-categories > :not(.app-notebook-paper) {
+  flex-shrink: 0;
+}
+
+.app-notebook-categories .app-notebook-category-back,
+.app-notebook-categories .app-notebook-header,
+.app-notebook-categories .app-notebook-notice,
+.app-notebook-categories .app-notebook-errors {
+  margin: 0;
+}
+
+.app-notebook-categories .app-notebook-header {
+  gap: 12px;
+}
+
+.app-notebook-categories .app-notebook-eyebrow {
+  margin-bottom: 8px;
+}
+
+.app-notebook-categories h1 {
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+}
+
+.app-notebook-categories .app-notebook-paper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 160px;
+  margin: 0 6px 8px 0;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.app-notebook-categories .app-notebook-section-heading {
+  flex-shrink: 0;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.app-notebook-category-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 6px;
+  margin-left: -6px;
+}
+
+.app-notebook-category-list:focus-visible {
+  outline: 2px solid var(--note-accent);
+  outline-offset: -2px;
+}
+
+.app-notebook-categories .app-notebook-category-row {
+  padding: 12px 0;
+}
+
+.app-notebook-categories .app-notebook-paper-footer {
+  flex-shrink: 0;
+  padding-top: 12px;
+}
+
+.app-notebook-categories .app-notebook-empty {
+  padding: 24px 8px;
+}
+
 @media (max-width: 575.98px) {
+  .app-notebook-category-row .app-notebook-category {
+    flex-basis: 100%;
+  }
   .app-notebook {
     margin-top: 16px;
   }

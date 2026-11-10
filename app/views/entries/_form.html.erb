@@ -25,7 +25,7 @@
       </div>
       <div class="app-notebook-field">
         <%= form.label :occurred_on, "Data do lançamento", class: "form-label" %>
-        <%= form.date_field :occurred_on, class: "form-control", required: true %>
+        <%= form.date_field :occurred_on, class: "form-control", required: true, value: form.object.occurred_on || Date.current %>
       </div>
       <div class="app-notebook-field">
         <%= form.label :amount, "Valor (R$)", class: "form-label" %>
@@ -38,6 +38,9 @@
             @categories, :id, :name,
             { prompt: "Selecione uma categoria" },
             { class: "form-select", required: true } %>
+            <div class="mt-2 ms-1">
+              <%= link_to "Adicionar categoria", categories_path(from_entry: "1", entry_id: entry.persisted? ? entry.id : nil), class: "text-muted" %>
+            </div>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
         <%= form.label :kind, "Tipo do lançamento", class: "form-label" %>

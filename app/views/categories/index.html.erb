@@ -1,16 +1,64 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Categorias | Mini Finance" %>
 
-<% content_for :title, "Categories" %>
+<main class="app-notebook app-notebook-categories" aria-labelledby="categories-title">
+  <nav class="app-notebook-category-back" aria-label="Retorno ao lançamento">
+    <%= link_to category_entry_form_path, class: "app-notebook-detail app-notebook-back-link" do %>
+      <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para o formulário
+    <% end %>
+  </nav>
+  <header class="app-notebook-header">
+    <div>
+      <p class="app-notebook-eyebrow"><i class="bi bi-tags" aria-hidden="true"></i> Mini Finance / meu caderno</p>
+      <h1 id="categories-title">Categorias<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">Um lugar para cada tipo de anotação.</p>
+    </div>
+    <%= link_to new_category_path, class: "app-notebook-button" do %>
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Adicionar categoria
+    <% end %>
+  </header>
 
-<h1>Categories</h1>
-
-<div id="categories">
-  <% @categories.each do |category| %>
-    <%= render category %>
-    <p>
-      <%= link_to "Show this category", category %>
-    </p>
+  <% if notice.present? %>
+    <p class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <%= notice %></p>
   <% end %>
-</div>
+  <% if alert.present? %>
+    <p class="app-notebook-errors" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> <%= alert %></p>
+  <% end %>
 
-<%= link_to "New category", new_category_path %>
+  <section class="app-notebook-paper" aria-labelledby="categories-list-title">
+    <div class="app-notebook-section-heading">
+      <h2 id="categories-list-title">As divisórias do caderno</h2>
+      <span><%= pluralize(@categories.size, "categoria", plural: "categorias") %></span>
+    </div>
+    <div id="categories" class="app-notebook-category-list" role="region" aria-labelledby="categories-list-title" tabindex="0">
+      <% if @categories.any? %>
+        <% @categories.each do |category| %>
+          <div class="app-notebook-category-row">
+            <%= render category %>
+            <div class="app-notebook-category-actions">
+              <%= link_to category, class: "app-notebook-detail", aria: { label: "Ver categoria #{category.name}" } do %>
+                Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              <% end %>
+              <%= button_to category,
+                  method: :delete,
+                  form: { data: { turbo_confirm: "Excluir a categoria #{category.name}? Categorias com lançamentos não podem ser excluídas." } },
+                  class: "app-notebook-delete",
+                  aria: { label: "Excluir categoria #{category.name}" } do %>
+                <i class="bi bi-trash" aria-hidden="true"></i> Excluir
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="app-notebook-empty">
+          <i class="bi bi-tags" aria-hidden="true"></i>
+          <h3>Cada anotação no seu lugar</h3>
+          <p>Adicione sua primeira categoria para organizar os lançamentos.</p>
+        </div>
+      <% end %>
+    </div>
+    <footer class="app-notebook-paper-footer">
+      <span>Um caderno organizado começa pelos detalhes.</span>
+      <i class="bi bi-bookmark" aria-hidden="true"></i>
+    </footer>
+  </section>
+</main>

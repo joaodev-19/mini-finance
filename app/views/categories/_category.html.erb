@@ -1,7 +1,7 @@
-<div id="<%= dom_id category %>">
-  <div>
-    <strong>Name:</strong>
-    <%= category.name %>
+<article id="<%= dom_id category %>" class="app-notebook-category" aria-labelledby="<%= dom_id(category, :name) %>">
+  <span class="app-notebook-category-icon" aria-hidden="true"><%= category_icon(category) %></span>
+  <div class="app-notebook-category-content">
+    <p class="app-note-entry-category">Categoria</p>
+    <h2 id="<%= dom_id(category, :name) %>" class="app-note-entry-title"><%= category.name %></h2>
   </div>
-
-</div>
+</article>

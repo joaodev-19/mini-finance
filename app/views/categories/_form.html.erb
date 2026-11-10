@@ -1,7 +1,7 @@
 <%= form_with(model: category) do |form| %>
   <% if category.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(category.errors.count, "error") %> prohibited this category from being saved:</h2>
+    <div class="app-notebook-errors" role="alert">
+      <p>Confira os dados antes de salvar:</p>
 
       <ul>
         <% category.errors.each do |error| %>
@@ -11,12 +11,17 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="app-notebook-fields">
+    <div class="app-notebook-field app-notebook-field-wide">
+      <%= form.label :name, "Nome da categoria", class: "form-label" %>
+      <%= form.text_field :name, class: "form-control", placeholder: "Ex.: Alimentação",
+          aria: { describedby: "category-name-help" } %>
+      <p id="category-name-help" class="app-notebook-field-help">Escolha um nome fácil de reconhecer ao registrar um lançamento.</p>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="app-notebook-form-actions justify-content-end">
+    <%= form.submit category.persisted? ? "Salvar alterações" : "Adicionar categoria",
+        class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
   </div>
 <% end %>

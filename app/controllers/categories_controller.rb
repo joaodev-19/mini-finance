@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  before_action :remember_entry_form, only: :index
   before_action :set_category, only: %i[ show edit update destroy ]
 
   # GET /categories or /categories.json
@@ -25,7 +26,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to @category, notice: "Category was successfully created." }
+        format.html { redirect_to categories_path, notice: "Category was successfully created." }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_content }
@@ -49,15 +50,24 @@ class CategoriesController < ApplicationController
 
   # DELETE /categories/1 or /categories/1.json
   def destroy
-    @category.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to categories_path, notice: "Category was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    if @category.destroy
+      redirect_to categories_path,
+        notice: "Categoria excluída com sucesso.",
+        status: :see_other
+    else
+      redirect_to categories_path,
+        alert: "Não é possível excluir uma categoria com lançamentos vinculados.",
+        status: :see_other
     end
   end
 
   private
+    def remember_entry_form
+      return unless params[:from_entry] == "1"
+
+      session[:category_return_entry_id] = Entry.find_by(id: params[:entry_id])&.id
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params.expect(:id))

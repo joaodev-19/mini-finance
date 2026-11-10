@@ -1,5 +1,5 @@
 module CategoriesHelper
-    CATEGORY_ICONS = {
+  CATEGORY_ICONS = {
     "alimentacao"   => "bi-cup-hot",
     "supermercado"  => "bi-cart",
     "transporte"    => "bi-car-front",
@@ -16,5 +16,14 @@ module CategoriesHelper
     icon = CATEGORY_ICONS.fetch(key, "bi-tag")
 
     tag.i(class: "bi #{icon}", aria: { hidden: true })
+  end
+
+  def category_entry_form_path
+    entry_id = session[:category_return_entry_id]
+    if entry_id.present? && Entry.exists?(entry_id)
+      edit_entry_path(entry_id)
+    else
+      new_entry_path
+    end
   end
 end

@@ -1,10 +1,26 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "#{@category.name} | Mini Finance" %>
 
-<%= render @category %>
+<main class="app-notebook app-notebook-show" aria-labelledby="category-title">
+  <% if notice.present? %>
+    <p class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <%= notice %></p>
+  <% end %>
 
-<div>
-  <%= link_to "Edit this category", edit_category_path(@category) %> |
-  <%= link_to "Back to categories", categories_path %>
-
-  <%= button_to "Destroy this category", @category, method: :delete %>
-</div>
+  <div class="app-notebook-paper">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow"><%= category_icon(@category) %> Categoria do caderno</p>
+      <h1 id="category-title"><%= @category.name %></h1>
+      <p class="app-notebook-subtitle">Uma divisória para organizar seus lançamentos.</p>
+    </header>
+    <dl class="app-notebook-details">
+      <div>
+        <dt>Lançamentos vinculados</dt>
+        <dd><%= pluralize(@category.entries.count, "lançamento", plural: "lançamentos") %></dd>
+      </div>
+    </dl>
+    <div class="app-notebook-form-actions">
+      <%= link_to "Voltar às categorias", categories_path, class: "app-notebook-detail" %>
+      <%= link_to "Editar categoria", edit_category_path(@category), class: "app-notebook-button" %>
+    </div>
+    <%= link_to "Voltar para o formulário", category_entry_form_path, class: "app-notebook-detail" %>
+  </div>
+</main>

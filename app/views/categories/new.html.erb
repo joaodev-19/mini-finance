@@ -1,11 +1,19 @@
-<% content_for :title, "New category" %>
+<% content_for :title, "Nova categoria | Mini Finance" %>
 
-<h1>New category</h1>
+<main class="app-notebook app-notebook-show" aria-labelledby="new-category-title">
+  <nav class="app-notebook-category-back" aria-label="Retorno às categorias">
+    <%= link_to categories_path, class: "app-notebook-detail app-notebook-back-link" do %>
+      <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar às categorias
+    <% end %>
+  </nav>
 
-<%= render "form", category: @category %>
+  <section class="app-notebook-paper" aria-labelledby="new-category-title">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow"><i class="bi bi-tags" aria-hidden="true"></i> No meu caderno</p>
+      <h1 id="new-category-title">Nova categoria</h1>
+      <p class="app-notebook-subtitle">Crie uma divisória para organizar seus lançamentos.</p>
+    </header>
 
-<br>
-
-<div>
-  <%= link_to "Back to categories", categories_path %>
-</div>
+    <%= render "form", category: @category %>
+  </section>
+</main>
