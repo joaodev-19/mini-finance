@@ -9,4 +9,7 @@ class Entry < ApplicationRecord
   validates :title, :amount, :occurred_on, :kind, presence: true
 
   validates :amount, numericality: { greater_than: 0 }
-end
+
+  scope :filter_by_category, ->(category) { where(category: category) if category.present? }
+  scope :filter_by_kind, ->(kind) { where(kind: kind) if kind.present? }
+end 

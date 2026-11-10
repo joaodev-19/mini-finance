@@ -17,9 +17,39 @@
   <% end %>
 
   <section class="app-notebook-paper" aria-labelledby="notebook-notes-title">
-    <div class="app-notebook-section-heading">
+    <div class="app-notebook-section-heading app-notebook-entries-heading">
       <h2 id="notebook-notes-title">Minhas anotações</h2>
-      <span><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
+      <div class="app-notebook-heading-actions">
+        <span class="app-notebook-entry-count"><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
+        <div class="dropdown">
+          <% active_filter_count = [params[:category], params[:kind]].count(&:present?) %>
+          <button type="button" id="entry-filters-toggle" class="app-notebook-filter-toggle dropdown-toggle"
+                  data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-controls="entry-filters-menu">
+            <i class="bi bi-sliders" aria-hidden="true"></i>
+            Filtros<%= " (#{active_filter_count})" if active_filter_count.positive? %>
+          </button>
+          <div id="entry-filters-menu" class="dropdown-menu dropdown-menu-end app-notebook-filter-menu" aria-labelledby="entry-filters-toggle">
+            <%= form_with url: entries_path, method: :get, class: "app-notebook-filters" do |form| %>
+              <div class="app-notebook-filter-field">
+                <%= form.label :category, "Categoria", class: "form-label" %>
+                <%= form.collection_select :category, @categories, :id, :name,
+                    { include_blank: "Todas", selected: params[:category] },
+                    { class: "form-select" } %>
+              </div>
+              <div class="app-notebook-filter-field">
+                <%= form.label :kind, "Tipo de lançamento", class: "form-label" %>
+                <%= form.select :kind, entry_kind_options,
+                    { include_blank: "Todos", selected: params[:kind] },
+                    { class: "form-select" } %>
+              </div>
+              <div class="app-notebook-filter-actions">
+                <%= link_to "Limpar filtros", entries_path, class: "app-notebook-filter-clear" %>
+                <%= form.submit "Aplicar", class: "app-notebook-button", data: { turbo_submits_with: "Aplicando…" } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="entries" class="app-notebook-entries">
       <% if @entries.any? %>

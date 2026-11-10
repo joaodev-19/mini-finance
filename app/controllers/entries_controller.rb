@@ -1,10 +1,12 @@
 class EntriesController < ApplicationController
   before_action :set_entry, only: %i[ show edit update destroy ]
-  before_action :set_categories, only: %i[new edit create update]
+  before_action :set_categories, only: %i[index new edit create update]
 
   # GET /entries or /entries.json
   def index
-    @entries = Entry.includes(:category).order(created_at: :desc)
+    @entries = Entry.includes(:category).order(occurred_on: :desc)
+    @entries = @entries.filter_by_category(params[:category]) if params[:category].present?
+    @entries = @entries.filter_by_kind(params[:kind]) if params[:kind].present?
   end
 
   # GET /entries/1 or /entries/1.json

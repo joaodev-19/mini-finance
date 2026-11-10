@@ -140,6 +140,107 @@
   font-size: .75rem;
 }
 
+.app-notebook-entries-heading {
+  align-items: center;
+}
+
+.app-notebook-heading-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.app-notebook-entry-count {
+  white-space: nowrap;
+}
+
+.app-notebook-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--note-line);
+  border-radius: 6px;
+  background: var(--note-paper);
+  color: var(--note-accent);
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.app-notebook-filter-toggle:hover,
+.app-notebook-filter-toggle[aria-expanded="true"] {
+  border-color: var(--note-accent);
+  background: var(--note-soft);
+}
+
+.app-notebook-filter-toggle:focus-visible {
+  outline: 3px solid var(--note-accent);
+  outline-offset: 4px;
+}
+
+.app-notebook-filter-menu {
+  --bs-dropdown-bg: var(--note-paper);
+  --bs-dropdown-border-color: var(--note-line);
+  --bs-dropdown-color: var(--note-ink);
+  width: min(280px, calc(100vw - 64px));
+  padding: 20px;
+  box-shadow: var(--note-shadow);
+}
+
+.app-notebook-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app-notebook-filters .form-label {
+  margin-bottom: 6px;
+  color: var(--note-muted);
+  font-size: .75rem;
+}
+
+.app-notebook-filters .form-select {
+  border-color: var(--note-line);
+  background-color: var(--note-paper);
+  color: var(--note-ink);
+  font-size: .8rem;
+}
+
+.app-notebook-filters .form-select:focus {
+  border-color: var(--note-accent);
+  box-shadow: 0 0 0 3px #4d60431a;
+}
+
+.app-notebook-filter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--note-line);
+}
+
+.app-notebook-filter-clear {
+  color: var(--note-muted);
+  font-size: .75rem;
+  text-underline-offset: 3px;
+}
+
+.app-notebook-filter-clear:hover {
+  color: var(--note-accent);
+}
+
+.app-notebook-filter-actions .app-notebook-button {
+  min-height: 36px;
+  padding: 8px 14px;
+  font-size: .75rem;
+}
+
 .app-notebook-row {
   display: flex;
   align-items: center;
@@ -504,6 +605,19 @@
 }
 
 // The layout contributes 24px of padding on each edge of the viewport.
+.app-notebook.app-notebook-new-entry {
+  min-height: calc(100vh - 48px);
+  min-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.app-notebook-new-entry .app-notebook-paper {
+  flex: 1;
+  margin: 0 6px 8px 0;
+}
+
 .app-notebook.app-notebook-categories {
   display: flex;
   flex-direction: column;

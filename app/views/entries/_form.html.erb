@@ -1,5 +1,5 @@
 
-<%= form_with model: entry, class: "app-notebook app-notebook-form" do |form| %>
+<%= form_with model: entry, class: "app-notebook app-notebook-form#{' app-notebook-new-entry' if entry.new_record?}" do |form| %>
   <div class="app-notebook-paper">
     <header class="app-notebook-form-heading">
       <p class="app-notebook-eyebrow"><i class="bi bi-pencil-square" aria-hidden="true"></i> No meu caderno</p>
@@ -39,7 +39,7 @@
             { prompt: "Selecione uma categoria" },
             { class: "form-select", required: true } %>
             <div class="mt-2 ms-1">
-              <%= link_to "Adicionar categoria", categories_path(from_entry: "1", entry_id: entry.persisted? ? entry.id : nil), class: "text-muted" %>
+              <%= link_to "Adicionar categoria", categories_path, class: "text-muted" %>
             </div>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
