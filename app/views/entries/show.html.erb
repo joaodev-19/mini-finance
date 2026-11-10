@@ -1,0 +1,34 @@
+<main class="app-notebook app-notebook-show">
+  <div class="app-notebook-paper">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow">Detalhes do lançamento</p>
+      <h1><%= @entry.title %></h1>
+    </header>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p>Categoria: <%= @entry.category&.name %> <%= category_icon(@entry.category) %></p>
+        <p>
+          <%= number_to_currency(@entry.amount,
+                unit: "R$ ", separator: ",", delimiter: ".") %>
+        </p>
+
+      </div>
+
+      <div class="col-12 col-md-6">
+        <p class="text-muted">Descrição do lançamento</p>
+        <p>
+          <% if @entry.description %>
+            <%= @entry.description %></p>
+          <% else %>
+            Sem Descrição
+          <% end %>
+      </div>
+    </div>
+
+    <div class="app-notebook-form-actions">
+      <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>
+      <%= link_to "Editar", edit_entry_path(@entry), class: "app-notebook-button" %>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,47 @@
+<% content_for :title, "Meu caderno de lançamentos | Mini Finance" %>
+
+<main class="app-notebook" aria-labelledby="notebook-title">
+  <header class="app-notebook-header">
+    <div>
+      <p class="app-notebook-eyebrow"><i class="bi bi-journal-text" aria-hidden="true"></i> Mini Finance / meu caderno</p>
+      <h1 id="notebook-title">Lançamentos<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">As contas do dia a dia, uma anotação de cada vez.</p>
+    </div>
+    <%= link_to new_entry_path, class: "app-notebook-button" do %>
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo lançamento
+    <% end %>
+  </header>
+
+  <% if notice.present? %>
+    <p class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <%= notice %></p>
+  <% end %>
+
+  <section class="app-notebook-paper" aria-labelledby="notebook-notes-title">
+    <div class="app-notebook-section-heading">
+      <h2 id="notebook-notes-title">Minhas anotações</h2>
+      <span><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
+    </div>
+    <div id="entries" class="app-notebook-entries">
+      <% if @entries.any? %>
+        <% @entries.each do |entry| %>
+          <div class="app-notebook-row">
+            <%= render entry %>
+            <%= link_to entry, class: "app-notebook-detail", aria: { label: "Ver lançamento: #{entry.title}" } do %>
+              Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="app-notebook-empty">
+          <i class="bi bi-pencil-square" aria-hidden="true"></i>
+          <h3>Uma página em branco</h3>
+          <p>Seu primeiro lançamento começa este caderno.<br>Use “Novo lançamento” para fazer uma anotação.</p>
+        </div>
+      <% end %>
+    </div>
+    <footer class="app-notebook-paper-footer">
+      <span>Pequenas anotações, mais clareza.</span>
+      <i class="bi bi-pencil" aria-hidden="true"></i>
+    </footer>
+  </section>
+</main>
