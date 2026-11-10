@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Mini Finance</title>
+  <desc id="desc">Caderno creme com margem rosada e gráfico de crescimento verde sobre um fundo verde-oliva.</desc>
+
+  <!-- App background: the same olive green used by Mini Finance. -->
+  <rect width="64" height="64" rx="15" fill="#4D6043"/>
+
+  <!-- Subtle offset sheet: a nod to the stacked-paper interface. -->
+  <rect x="15" y="12" width="39" height="43" rx="5" fill="#394B30" opacity=".38"/>
+
+  <!-- Notebook sheet and pink margin. -->
+  <rect x="12" y="9" width="39" height="44" rx="5" fill="#FFFCF4"/>
+  <path d="M23 13V49" stroke="#E6BCB0" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Punched binding marks. -->
+  <circle cx="17.5" cy="19" r="1.6" fill="#BFC8B6"/>
+  <circle cx="17.5" cy="31" r="1.6" fill="#BFC8B6"/>
+  <circle cx="17.5" cy="43" r="1.6" fill="#BFC8B6"/>
+
+  <!-- Light handwritten ledger guides. -->
+  <path d="M29 20H44M29 26H40M29 46H34" fill="none" stroke="#DBDFD3" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Bold, legible financial growth mark. -->
+  <path d="M28.5 42.5L35 35.5L40 39L47 30" fill="none" stroke="#4D6043" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M40.5 30H47V36.5" fill="none" stroke="#4D6043" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

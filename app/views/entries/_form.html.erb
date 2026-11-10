@@ -38,6 +38,14 @@
             { prompt: "Selecione uma categoria" },
             { class: "form-select" } %>
       </div>
+      <div class="app-notebook-field app-notebook-field-wide">
+        <%= form.label :kind, "Tipo de transação", class: "form-label" %>
+        <%= form.select :kind,
+            [["Receita", "income"], ["Despesa", "expense"]],
+            { prompt: "Selecione um tipo" },
+            { class: "form-select" }
+          %>
+      </div>
     </div>
     <div class="app-notebook-form-actions">
       <span class="app-notebook-form-hint"><i class="bi bi-journal-check" aria-hidden="true"></i> Cada detalhe conta.</span>

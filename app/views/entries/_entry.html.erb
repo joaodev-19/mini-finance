@@ -13,5 +13,9 @@
       <time class="app-note-entry-date" datetime="<%= entry.occurred_on.iso8601 %>"><%= entry.occurred_on.strftime("%d/%m/%Y") %></time>
     <% end %>
   </div>
-  <p class="app-note-entry-amount"><%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+  
+  <p class="app-note-entry-amount <%= entry_amount_class(entry) %>">
+     <%= "+" if entry.income? %><%= "-" if entry.expense? %> <%= number_to_currency(entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
+  </p>
+
 </article>
