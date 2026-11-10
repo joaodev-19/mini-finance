@@ -1,30 +1,46 @@
-<main class="app-notebook app-notebook-show">
+<% content_for :title, "#{@entry.title} | Mini Finance" %>
+
+<main class="app-notebook app-notebook-show" aria-labelledby="entry-title">
+  <% if notice.present? %>
+    <p class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <%= notice %></p>
+  <% end %>
   <div class="app-notebook-paper">
     <header class="app-notebook-form-heading">
       <p class="app-notebook-eyebrow">Detalhes do lançamento</p>
-      <h1><%= @entry.title %></h1>
+      <h1 id="entry-title"><%= @entry.title %></h1>
     </header>
 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <p>Categoria: <%= @entry.category&.name %> <%= category_icon(@entry.category) %></p>
-        <p>
-          <%= number_to_currency(@entry.amount,
-                unit: "R$ ", separator: ",", delimiter: ".") %>
-        </p>
-
+    <dl class="app-notebook-details">
+      <div>
+        <dt>Tipo do lançamento</dt>
+        <dd><%= entry_kind_label(@entry) %></dd>
       </div>
-
-      <div class="col-12 col-md-6">
-        <p class="text-muted">Descrição do lançamento</p>
-        <p>
-          <% if @entry.description %>
-            <%= @entry.description %></p>
+      <div>
+        <dt>Valor</dt>
+        <dd class="app-note-entry-amount <%= entry_amount_class(@entry) %>">
+          <%= "+" if @entry.income? %><%= "-" if @entry.expense? %>
+          <%= number_to_currency(@entry.amount, unit: "R$ ", separator: ",", delimiter: ".") %>
+        </dd>
+      </div>
+      <div>
+        <dt>Categoria</dt>
+        <dd><%= category_icon(@entry.category) %> <%= @entry.category&.name || "Sem categoria" %></dd>
+      </div>
+      <div>
+        <dt>Data do lançamento</dt>
+        <dd>
+          <% if @entry.occurred_on.present? %>
+            <time datetime="<%= @entry.occurred_on.iso8601 %>"><%= @entry.occurred_on.strftime("%d/%m/%Y") %></time>
           <% else %>
-            Sem Descrição
+            Não informada
           <% end %>
+        </dd>
       </div>
-    </div>
+      <div class="app-notebook-field-wide">
+        <dt>Descrição</dt>
+        <dd class="app-notebook-description"><%= @entry.description.presence || "Sem descrição." %></dd>
+      </div>
+    </dl>
 
     <div class="app-notebook-form-actions">
       <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>

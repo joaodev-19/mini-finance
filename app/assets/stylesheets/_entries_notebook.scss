@@ -10,6 +10,8 @@
   --note-margin: #e6bcb0;
   --note-soft: #eeeee2;
   --note-error: #8b352d;
+  --note-income: #41694d;
+  --note-expense: #a44e49;
   --note-shadow: 0 12px 40px #343b320d, 3px 4px 0 #f1eee4, 4px 5px 0 #dfddcf;
   color: var(--note-ink);
 }
@@ -92,7 +94,7 @@
   cursor: wait;
 }
 
-.app-notebook :is(a, input, select):focus-visible {
+.app-notebook :is(a, input, select, textarea):focus-visible {
   outline: 3px solid var(--note-accent);
   outline-offset: 4px;
 }
@@ -154,7 +156,7 @@
   align-items: center;
   gap: 16px;
   min-width: 0;
-  padding: 24px 0;
+  padding: 24px 0px;
 }
 
 .app-notebook-row .app-note-entry {
@@ -212,11 +214,64 @@
 }
 
 .app-note-entry-amount--income {
-  color: #41694d;
+  color: var(--note-income);
 }
 
 .app-note-entry-amount--expense {
-  color: #a44e49;
+  color: var(--note-expense);
+}
+
+.app-note-entry-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.app-note-entry-kind,
+.app-note-entry-description,
+.app-notebook-field-help {
+  color: var(--note-muted);
+  font-size: .8rem;
+  line-height: 1.6;
+}
+
+.app-note-entry-description,
+.app-notebook-field-help {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.app-notebook-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+}
+
+.app-notebook-details dt {
+  margin-bottom: 8px;
+  color: var(--note-muted);
+  font-size: .875rem;
+  font-weight: 600;
+}
+
+.app-notebook-details dd {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.app-notebook-details .app-note-entry-amount {
+  max-width: 100%;
+  text-align: left;
+}
+
+.app-notebook-description {
+  white-space: pre-wrap;
+}
+
+.app-notebook-field textarea.form-control {
+  resize: vertical;
 }
 
 .app-notebook-detail {
@@ -429,7 +484,8 @@
     margin-left: auto;
   }
 
-  .app-notebook-fields {
+  .app-notebook-fields,
+  .app-notebook-details {
     grid-template-columns: minmax(0, 1fr);
   }
 

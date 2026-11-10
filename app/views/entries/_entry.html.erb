@@ -1,5 +1,5 @@
 <article id="<%= dom_id entry %>" 
-        class="app-note-entry" 
+        class="app-note-entry px-2" 
         aria-labelledby="<%= dom_id(entry, :title) %>"
         >
   <span class="app-note-entry-icon" aria-hidden="true">
@@ -9,8 +9,14 @@
   <div class="app-note-entry-content">
     <p class="app-note-entry-category"><%= entry.category&.name || "Sem categoria" %></p>
     <h3 id="<%= dom_id(entry, :title) %>" class="app-note-entry-title"><%= entry.title %></h3>
-    <% if entry.occurred_on.present? %>
-      <time class="app-note-entry-date" datetime="<%= entry.occurred_on.iso8601 %>"><%= entry.occurred_on.strftime("%d/%m/%Y") %></time>
+    <div class="app-note-entry-meta">
+      <span class="app-note-entry-kind"><%= entry_kind_label(entry) %></span>
+      <% if entry.occurred_on.present? %>
+        <time class="app-note-entry-date" datetime="<%= entry.occurred_on.iso8601 %>"><%= entry.occurred_on.strftime("%d/%m/%Y") %></time>
+      <% end %>
+    </div>
+    <% if entry.description.present? %>
+      <p class="app-note-entry-description"><%= truncate(entry.description, length: 120) %></p>
     <% end %>
   </div>
   

@@ -4,6 +4,7 @@ one:
   occurred_on: 2026-11-10
   description: MyText
   category: one
+  kind: income
 
 two:
   title: MyString
@@ -11,3 +12,4 @@ two:
   occurred_on: 2026-11-10
   description: MyText
   category: two
+  kind: expense

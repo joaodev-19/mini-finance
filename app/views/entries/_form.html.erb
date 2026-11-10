@@ -4,7 +4,7 @@
     <header class="app-notebook-form-heading">
       <p class="app-notebook-eyebrow"><i class="bi bi-pencil-square" aria-hidden="true"></i> No meu caderno</p>
       <h2><%= entry.persisted? ? "Revisar anotação" : "Uma nova anotação" %></h2>
-      <p class="app-notebook-subtitle">Registre os detalhes para lembrar depois.</p>
+      <p class="app-notebook-subtitle">Registre os detalhes para lembrar depois. Apenas a descrição é opcional.</p>
     </header>
 
     <% if entry.errors.any? %>
@@ -21,38 +21,44 @@
     <div class="app-notebook-fields">
       <div class="app-notebook-field app-notebook-field-wide">
         <%= form.label :title, "Título", class: "form-label" %>
-        <%= form.text_field :title, class: "form-control", placeholder: "Ex.: Café da manhã" %>
+        <%= form.text_field :title, class: "form-control", placeholder: "Ex.: Café da manhã", required: true %>
       </div>
       <div class="app-notebook-field">
         <%= form.label :occurred_on, "Data do lançamento", class: "form-label" %>
-        <%= form.date_field :occurred_on, class: "form-control" %>
+        <%= form.date_field :occurred_on, class: "form-control", required: true %>
       </div>
       <div class="app-notebook-field">
         <%= form.label :amount, "Valor (R$)", class: "form-label" %>
-        <%= form.number_field :amount, step: "0.01", class: "form-control", placeholder: "0,00" %>
+        <%= form.number_field :amount, step: "0.01", min: "0.01", class: "form-control", placeholder: "0,00", required: true,
+            aria: { describedby: "entry-amount-help" } %>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
         <%= form.label :category_id, "Categoria", class: "form-label" %>
         <%= form.collection_select :category_id,
             @categories, :id, :name,
             { prompt: "Selecione uma categoria" },
-            { class: "form-select" } %>
+            { class: "form-select", required: true } %>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
-        <%= form.label :kind, "Tipo de transação", class: "form-label" %>
+        <%= form.label :kind, "Tipo do lançamento", class: "form-label" %>
         <%= form.select :kind,
-            [["Receita", "income"], ["Despesa", "expense"]],
+            entry_kind_options,
             { prompt: "Selecione um tipo" },
-            { class: "form-select" }
+            { class: "form-select", required: true }
           %>
+      </div>
+      <div class="app-notebook-field app-notebook-field-wide">
+        <%= form.label :description, "Descrição (opcional)", class: "form-label" %>
+        <%= form.text_area :description, rows: 4, class: "form-control",
+            placeholder: "Acrescente os detalhes que deseja guardar sobre este lançamento." %>
       </div>
     </div>
     <div class="app-notebook-form-actions">
       <span class="app-notebook-form-hint"><i class="bi bi-journal-check" aria-hidden="true"></i> Cada detalhe conta.</span>
-      <% if @entry.new_record? %>
+      <% if entry.new_record? %>
         <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>
       <% else %>
-        <%= link_to "Voltar ao lançamento", @entry, class:"app-notebook-detail" %>
+        <%= link_to "Voltar ao lançamento", entry, class: "app-notebook-detail" %>
       <% end %>
       <%= form.submit "Salvar anotação", class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
     </div>
