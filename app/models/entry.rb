@@ -10,6 +10,6 @@ class Entry < ApplicationRecord
 
   validates :amount, numericality: { greater_than: 0 }
 
-  scope :filter_by_category, ->(category) { where(category: category) if category.present? }
-  scope :filter_by_kind, ->(kind) { where(kind: kind) if kind.present? }
+  scope :filter_by_category, ->(category_id) { where(category_id: category_id) if category_id.present? }
+  scope :filter_by_kind, ->(kind) { where(kind: kind) if kinds.key?(kind) }
 end 

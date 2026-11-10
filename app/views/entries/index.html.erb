@@ -56,16 +56,25 @@
         <% @entries.each do |entry| %>
           <div class="app-notebook-row">
             <%= render entry %>
-            <%= link_to entry, class: "app-notebook-detail", aria: { label: "Ver lançamento: #{entry.title}" } do %>
+
+            <%= link_to entry, class: "app-notebook-detail",
+                aria: { label: "Ver lançamento: #{entry.title}" } do %>
               Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
             <% end %>
           </div>
         <% end %>
       <% else %>
         <div class="app-notebook-empty">
-          <i class="bi bi-pencil-square" aria-hidden="true"></i>
-          <h3>Uma página em branco</h3>
-          <p>Seu primeiro lançamento começa este caderno.<br>Use “Novo lançamento” para fazer uma anotação.</p>
+          <% if params[:category].present? || params[:kind].present? %>
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <h3>Nenhum lançamento encontrado</h3>
+            <p>Tente selecionar outros filtros.</p>
+            <%= link_to "Limpar filtros", entries_path, class: "app-notebook-detail" %>
+          <% else %>
+            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+            <h3>Uma página em branco</h3>
+            <p>Seu primeiro lançamento começa este caderno.</p>
+          <% end %>
         </div>
       <% end %>
     </div>

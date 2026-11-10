@@ -42,9 +42,18 @@
       </div>
     </dl>
 
-    <div class="app-notebook-form-actions">
+    <div class="app-notebook-form-actions app-notebook-entry-actions">
       <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>
-      <%= link_to "Editar", edit_entry_path(@entry), class: "app-notebook-button" %>
+      <div class="app-notebook-entry-action-buttons">
+        <%= button_to "Excluir",
+            entry_path(@entry),
+            method: :delete,
+            form: {
+              data: { turbo_confirm: "Deseja excluir este lançamento?" }
+            },
+            class: "app-notebook-delete" %>
+        <%= link_to "Editar", edit_entry_path(@entry), class: "app-notebook-button" %>
+      </div>
     </div>
   </div>
 </main>

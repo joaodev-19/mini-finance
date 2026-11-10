@@ -1,4 +1,5 @@
 // Styles belong only to the entries notebook and its shared partials.
+.app-notebook-shell,
 .app-notebook,
 .app-note-entry {
   --note-paper: #fffcf4;
@@ -20,6 +21,213 @@
   max-width: 920px;
   margin: 32px auto 64px;
   font-family: var(--bs-font-sans-serif);
+}
+
+// One shared sheet contains the dividers, page heading and page content.
+.app-notebook-shell {
+  --notebook-tabs-height: 46px;
+  --notebook-sheet-inset: 56px;
+  position: relative;
+  max-width: 920px;
+  min-width: 0;
+  margin: var(--notebook-tabs-height) auto 24px;
+  border: 1px solid var(--note-line);
+  border-radius: 6px 10px 10px 6px;
+  background: var(--note-paper);
+  box-shadow: var(--note-shadow);
+  font-family: var(--bs-font-sans-serif);
+}
+
+.app-notebook-shell-narrow {
+  max-width: 720px;
+}
+
+.app-notebook-sheet {
+  position: relative;
+  min-width: 0;
+  padding: 32px 32px 24px 64px;
+  border-radius: inherit;
+  background: linear-gradient(to right, transparent 39px, var(--note-margin) 39px, var(--note-margin) 40px, transparent 40px);
+  overflow-wrap: anywhere;
+}
+
+.app-notebook-sheet::before {
+  content: "";
+  position: absolute;
+  top: 32px;
+  bottom: 24px;
+  left: 12px;
+  width: 10px;
+  background: radial-gradient(circle at 5px 5px, var(--note-line) 4px, transparent 5px) 0 0 / 10px 48px repeat-y;
+  pointer-events: none;
+}
+
+.app-notebook-sheet > .app-notebook {
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+
+.app-notebook-sheet .app-notebook-field {
+  min-width: 0;
+}
+
+.app-notebook-sheet :is(.form-control, .form-select) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+// Inner sections retain their contents but share the outer sheet's surface.
+.app-notebook-sheet .app-notebook .app-notebook-paper {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.app-notebook-sheet .app-notebook-paper::before {
+  content: none;
+}
+
+.app-notebook-tabs {
+  position: absolute;
+  right: 12px;
+  bottom: 100%;
+  z-index: 1;
+  max-width: calc(100% - 24px);
+  height: var(--notebook-tabs-height);
+}
+
+.app-notebook-tabs-list {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 5px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-notebook-tabs-list li {
+  min-width: 0;
+}
+
+.app-notebook-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 8px 16px;
+  border: 1px solid #cfd4c3;
+  border-bottom: 0;
+  border-radius: 8px 12px 0 0;
+  background-color: #e5e9db;
+  color: var(--note-accent);
+  font-size: .8rem;
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+
+a.app-notebook-tab:hover {
+  background-color: var(--note-accent-hover);
+  color: var(--note-paper);
+}
+
+.app-notebook-tab.app-notebook-tab-active {
+  border-color: var(--note-accent);
+  background-color: var(--note-accent);
+  color: #fff;
+}
+
+// A short colored lip sits over the sheet's edge like a paper divider.
+.app-notebook-tab-active::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  bottom: -3px;
+  left: -1px;
+  height: 4px;
+  border-radius: 0 0 2px 2px;
+  background-color: inherit;
+  pointer-events: none;
+}
+
+.app-notebook-tab:focus-visible {
+  z-index: 2;
+  outline: 3px solid var(--note-accent);
+  outline-offset: 3px;
+}
+
+.app-notebook-tab-future {
+  border-color: var(--note-line);
+  background-color: var(--note-soft);
+  color: var(--note-muted);
+}
+
+.app-notebook-tab-future small {
+  font-size: .6rem;
+}
+
+.app-notebook-sheet > .app-notebook.app-notebook-new-entry {
+  min-height: calc(100vh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
+  min-height: calc(100dvh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
+}
+
+.app-notebook-sheet > .app-notebook.app-notebook-categories {
+  height: calc(100vh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
+  height: calc(100dvh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
+  min-height: 360px;
+  overflow: visible;
+}
+
+@media (max-width: 575.98px) {
+  .app-notebook-shell {
+    --notebook-sheet-inset: 48px;
+  }
+
+  .app-notebook-sheet {
+    padding: 28px 16px 20px 32px;
+    background: linear-gradient(to right, transparent 19px, var(--note-margin) 19px, var(--note-margin) 20px, transparent 20px);
+  }
+
+  .app-notebook-sheet::before {
+    left: 5px;
+    width: 6px;
+    background-size: 6px 48px;
+  }
+
+  .app-notebook-tabs {
+    right: 6px;
+    max-width: calc(100% - 12px);
+  }
+
+  .app-notebook-tabs-list {
+    gap: 3px;
+  }
+
+  .app-notebook-tab {
+    gap: 0;
+    padding: 8px 6px;
+    font-size: .7rem;
+  }
+
+  .app-notebook-tab-future {
+    flex-direction: column;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-notebook-tab {
+    transition: none;
+  }
 }
 
 .app-notebook-header {
@@ -526,6 +734,50 @@
 .app-notebook-form-hint {
   color: var(--note-muted);
   font: italic .875rem Georgia, serif;
+}
+
+.app-notebook-entry-actions > .app-notebook-detail {
+  min-height: 48px;
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: 0;
+}
+
+.app-notebook-entry-action-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.app-notebook-entry-action-buttons > form {
+  display: flex;
+  margin: 0;
+}
+
+.app-notebook-entry-action-buttons :is(.app-notebook-delete, .app-notebook-button) {
+  min-height: 48px;
+  padding: 12px 20px;
+  font-size: .875rem;
+}
+
+@media (max-width: 575.98px) {
+  .app-notebook-entry-action-buttons {
+    flex-basis: 100%;
+  }
+
+  .app-notebook-entry-action-buttons > :is(form, .app-notebook-button) {
+    flex: 1;
+  }
+
+  .app-notebook-entry-action-buttons .app-notebook-button {
+    width: auto;
+  }
+
+  .app-notebook-entry-action-buttons .app-notebook-delete {
+    width: 100%;
+  }
 }
 
 .app-notebook-category-row {
