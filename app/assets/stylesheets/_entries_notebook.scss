@@ -1,4 +1,9 @@
 // Styles belong only to the entries notebook and its shared partials.
+// Keep the sheet in place when only one section needs a page scrollbar.
+html {
+  scrollbar-gutter: stable;
+}
+
 .app-notebook-shell,
 .app-notebook,
 .app-note-entry {
@@ -26,7 +31,6 @@
 // One shared sheet contains the dividers, page heading and page content.
 .app-notebook-shell {
   --notebook-tabs-height: 46px;
-  --notebook-sheet-inset: 56px;
   position: relative;
   max-width: 920px;
   min-width: 0;
@@ -36,10 +40,6 @@
   background: var(--note-paper);
   box-shadow: var(--note-shadow);
   font-family: var(--bs-font-sans-serif);
-}
-
-.app-notebook-shell-narrow {
-  max-width: 720px;
 }
 
 .app-notebook-sheet {
@@ -174,23 +174,7 @@ a.app-notebook-tab:hover {
   font-size: .6rem;
 }
 
-.app-notebook-sheet > .app-notebook.app-notebook-new-entry {
-  min-height: calc(100vh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
-  min-height: calc(100dvh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
-}
-
-.app-notebook-sheet > .app-notebook.app-notebook-categories {
-  height: calc(100vh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
-  height: calc(100dvh - 50px - var(--notebook-tabs-height) - var(--notebook-sheet-inset));
-  min-height: 360px;
-  overflow: visible;
-}
-
 @media (max-width: 575.98px) {
-  .app-notebook-shell {
-    --notebook-sheet-inset: 48px;
-  }
-
   .app-notebook-sheet {
     padding: 28px 16px 20px 32px;
     background: linear-gradient(to right, transparent 19px, var(--note-margin) 19px, var(--note-margin) 20px, transparent 20px);
@@ -856,95 +840,19 @@ a.app-notebook-tab:hover {
   gap: 8px;
 }
 
-// The layout contributes 24px of padding on each edge of the viewport.
-.app-notebook.app-notebook-new-entry {
-  min-height: calc(100vh - 48px);
-  min-height: calc(100dvh - 48px);
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.app-notebook-new-entry .app-notebook-paper {
-  flex: 1;
-  margin: 0 6px 8px 0;
-}
-
-.app-notebook.app-notebook-categories {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  height: calc(100vh - 48px);
-  height: calc(100dvh - 48px);
-  margin: 0 auto;
-  overflow-y: auto;
-}
-
-.app-notebook-categories > :not(.app-notebook-paper) {
-  flex-shrink: 0;
-}
-
-.app-notebook-categories .app-notebook-category-back,
-.app-notebook-categories .app-notebook-header,
-.app-notebook-categories .app-notebook-notice,
-.app-notebook-categories .app-notebook-errors {
-  margin: 0;
-}
-
-.app-notebook-categories .app-notebook-header {
-  gap: 12px;
-}
-
-.app-notebook-categories .app-notebook-eyebrow {
-  margin-bottom: 8px;
-}
-
-.app-notebook-categories h1 {
-  margin-bottom: 8px;
-  font-size: clamp(2rem, 5vw, 2.75rem);
-}
-
-.app-notebook-categories .app-notebook-paper {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 160px;
-  margin: 0 6px 8px 0;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-.app-notebook-categories .app-notebook-section-heading {
-  flex-shrink: 0;
-  gap: 8px;
-  padding-bottom: 12px;
-}
-
-.app-notebook-category-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
-  padding: 6px;
-  margin-left: -6px;
-}
-
-.app-notebook-category-list:focus-visible {
-  outline: 2px solid var(--note-accent);
-  outline-offset: -2px;
-}
-
 .app-notebook-categories .app-notebook-category-row {
   padding: 12px 0;
 }
 
-.app-notebook-categories .app-notebook-paper-footer {
-  flex-shrink: 0;
-  padding-top: 12px;
-}
-
 .app-notebook-categories .app-notebook-empty {
   padding: 24px 8px;
+}
+
+@media (max-width: 991.98px) {
+  .app-notebook-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 575.98px) {

@@ -21,6 +21,7 @@
   </div>
 
   <div class="app-notebook-form-actions justify-content-end">
+    <%= link_to "Voltar para categorias", categories_path, class: "app-notebook-button" %>
     <%= form.submit category.persisted? ? "Salvar alterações" : "Adicionar categoria",
         class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
   </div>

@@ -1,11 +1,6 @@
 <% content_for :title, "Categorias | Mini Finance" %>
 
 <main class="app-notebook app-notebook-categories" aria-labelledby="categories-title">
-  <nav class="app-notebook-category-back" aria-label="Retorno ao lançamento">
-    <%= link_to new_entry_path, class: "app-notebook-detail app-notebook-back-link" do %>
-      <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para o formulário
-    <% end %>
-  </nav>
   <header class="app-notebook-header">
     <div>
       <p class="app-notebook-eyebrow"><i class="bi bi-tags" aria-hidden="true"></i> Mini Finance / meu caderno</p>
@@ -29,7 +24,7 @@
       <h2 id="categories-list-title">As divisórias do caderno</h2>
       <span><%= pluralize(@categories.size, "categoria", plural: "categorias") %></span>
     </div>
-    <div id="categories" class="app-notebook-category-list" role="region" aria-labelledby="categories-list-title" tabindex="0">
+    <div id="categories" class="app-notebook-category-list" role="region" aria-labelledby="categories-list-title">
       <% if @categories.any? %>
         <% @categories.each do |category| %>
           <div class="app-notebook-category-row">

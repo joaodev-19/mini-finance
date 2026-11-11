@@ -18,8 +18,8 @@
   </head>
 
   <body>
-    <div class="container min-vh-100 p-4">
-      <div class="app-notebook-shell<%= ' app-notebook-shell-narrow' unless action_name == 'index' %>">
+    <div class="container p-4">
+      <div class="app-notebook-shell">
         <%= render "shared/notebook_tabs" %>
         <div class="app-notebook-sheet">
           <%= yield %>
