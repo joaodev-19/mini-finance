@@ -23,7 +23,10 @@
   </div>
 
   <div class="app-notebook-form-actions justify-content-end">
-    <%= form.submit category.persisted? ? "Salvar alterações" : "Adicionar categoria",
-        class: "app-notebook-button app-save-stamp", data: { turbo_submits_with: "Salvando…" } %>
+    <% submit_label = category.persisted? ? "Salvar alterações" : "Adicionar categoria" %>
+    <%= form.button type: "submit", name: "commit", value: submit_label,
+        class: "app-notebook-button app-save-stamp app-save-stamp--record", data: { turbo_submits_with: "Salvando…" } do %>
+      <span class="app-save-seal" aria-hidden="true"><i class="bi bi-check2"></i></span> <%= submit_label %>
+    <% end %>
   </div>
 <% end %>

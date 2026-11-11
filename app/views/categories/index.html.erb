@@ -30,13 +30,13 @@
           <div class="app-notebook-category-row">
             <%= render category %>
             <div class="app-notebook-category-actions">
-              <%= link_to category, class: "app-notebook-detail app-page-marker", aria: { label: "Abrir categoria #{category.name}" } do %>
+              <%= link_to category, class: "app-notebook-detail app-sticker app-sticker--open", aria: { label: "Abrir categoria #{category.name}" } do %>
                 <span class="app-action-content"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Abrir</span>
               <% end %>
 
               <button 
                 type="button" 
-                class="app-notebook-delete app-delete-sticker"
+                class="app-notebook-delete app-sticker app-sticker--danger"
                 data-bs-toggle="modal" 
                 data-bs-target="#deleteCategoryModal"
                 data-category-name="<%= category.name %>"

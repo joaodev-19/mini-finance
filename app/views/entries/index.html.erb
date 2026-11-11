@@ -57,7 +57,7 @@
           <div class="app-notebook-row">
             <%= render entry %>
 
-            <%= link_to entry, class: "app-notebook-detail app-page-marker",
+            <%= link_to entry, class: "app-notebook-detail app-sticker app-sticker--open",
                 aria: { label: "Abrir lançamento: #{entry.title}" } do %>
               <span class="app-action-content"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Abrir</span>
             <% end %>

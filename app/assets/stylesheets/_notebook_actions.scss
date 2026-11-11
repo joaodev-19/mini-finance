@@ -1,5 +1,5 @@
 // Native page controls with paper surfaces. Modal controls intentionally use other classes.
-:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker) {
+:is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker) {
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -20,7 +20,7 @@
   cursor: pointer;
 }
 
-:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before {
+:is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker)::before {
   @include stationery-label-surface;
   content: "";
   position: absolute;
@@ -113,16 +113,38 @@
   color: var(--paper-action-ink);
 }
 
+.app-sticker {
+  flex-shrink: 0;
+  inline-size: 5.625rem;
+  white-space: nowrap;
+}
+
+.app-sticker--open {
+  --sticker-paper: var(--note-divider-paper);
+  --sticker-ink: var(--note-accent);
+}
+
+// Keep the detail-page delete sticker unchanged while list actions share the new base.
+.app-sticker--danger,
 .app-delete-sticker {
-  color: var(--note-error);
+  --sticker-paper: var(--stationery-label-surface);
+  --sticker-ink: var(--note-error);
 }
 
-.app-delete-sticker:hover {
+:is(.app-sticker, .app-delete-sticker) {
+  color: var(--sticker-ink);
+}
+
+:is(.app-sticker, .app-delete-sticker)::before {
+  background: var(--stationery-grain) 0 0 / 80px 80px repeat, var(--sticker-paper);
+}
+
+:is(.app-sticker, .app-delete-sticker):hover {
   background: transparent;
-  color: var(--note-error);
+  color: var(--sticker-ink);
 }
 
-.app-delete-sticker::after {
+:is(.app-sticker, .app-delete-sticker)::after {
   content: "";
   position: absolute;
   right: 2px;
@@ -138,19 +160,6 @@
   color: var(--note-error);
   font: italic 1.4rem / 1 var(--note-font-serif);
   transform: rotate(-8deg);
-}
-
-.app-page-marker {
-  flex-shrink: 0;
-  padding: 8px 12px;
-  font-weight: 600;
-}
-
-.app-page-marker::before {
-  border-left: 2px solid color-mix(in srgb, var(--note-accent) 45%, transparent);
-  border-radius: 1px 4px 4px 1px;
-  background: var(--note-divider-paper);
-  clip-path: none;
 }
 
 .app-notebook-detail.app-back-marker {
@@ -190,13 +199,39 @@
   font-size: .75rem;
 }
 
-// A fine inner frame suggests stamped ink without changing the submit hit area.
+// A circular ink seal carries the stamp motif inside a conventional submit target.
 .app-notebook-button.app-save-stamp--record {
-  border: 2px solid var(--note-accent);
-  border-radius: 4px 3px 4px 3px;
+  gap: 10px;
+  padding: 6px 14px 6px 7px;
+  border: 1px solid color-mix(in srgb, var(--note-accent) 50%, var(--note-paper));
+  border-radius: 5px;
   background: var(--note-paper);
-  box-shadow: inset 0 0 0 2px var(--note-paper), inset 0 0 0 3px color-mix(in srgb, var(--note-accent) 30%, transparent);
-  letter-spacing: .025em;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--note-accent) 8%, transparent);
+  letter-spacing: .015em;
+}
+
+.app-save-seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--note-accent) 5%, var(--note-paper));
+  color: var(--note-accent);
+  font-size: 1.05rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.app-save-seal::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed currentColor;
+  border-radius: inherit;
 }
 
 .app-save-stamp--record:hover:not(:disabled) {
@@ -216,19 +251,19 @@
   background: color-mix(in srgb, var(--note-expense) 5%, var(--note-paper));
 }
 
-:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker, .app-save-stamp):focus-visible {
+:is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker, .app-save-stamp):focus-visible {
   outline: 3px solid var(--note-accent);
   outline-offset: 4px;
 }
 
-:is(.app-paper-action, .app-delete-sticker, .app-save-stamp):disabled {
+:is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-save-stamp):disabled {
   opacity: .6;
   cursor: not-allowed;
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  :is(.app-paper-action, .app-delete-sticker):hover:not(:disabled)::before,
-  :is(.app-paper-action, .app-delete-sticker):hover:not(:disabled) .app-action-content {
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker):hover:not(:disabled)::before,
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker):hover:not(:disabled) .app-action-content {
     transform: translateY(-2px) rotate(-1deg);
   }
 
@@ -242,13 +277,8 @@
     transform: translateX(-2px);
   }
 
-  .app-page-marker:hover::before,
-  .app-page-marker:hover .app-action-content {
-    transform: translateX(4px);
-  }
-
   .app-save-stamp--record:hover:not(:disabled) {
-    transform: translateY(-1px) rotate(-.4deg);
+    transform: translateY(-1px);
   }
 }
 
@@ -258,12 +288,12 @@
   }
 
   .app-save-stamp--record:active:not(:disabled) {
-    transform: translateY(1px) scale(.97);
+    transform: translateY(1px) scale(.985);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before,
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker)::before,
   .app-action-content,
   .app-notebook-button.app-save-stamp {
     transition: none;
@@ -271,7 +301,7 @@
 }
 
 @media (forced-colors: active) {
-  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker),
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker),
   .app-notebook-button.app-save-stamp {
     border: 1px solid ButtonText;
     background: ButtonFace;
@@ -279,8 +309,8 @@
     color: ButtonText;
   }
 
-  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before,
-  :is(.app-paper-action, .app-delete-sticker)::after {
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker, .app-back-marker)::before,
+  :is(.app-paper-action, .app-sticker, .app-delete-sticker)::after {
     display: none;
   }
 

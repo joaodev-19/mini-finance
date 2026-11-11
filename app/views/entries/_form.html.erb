@@ -72,7 +72,7 @@
         <% end %>
         <%= form.button type: "submit", name: "commit", value: "Salvar anotação",
             class: "app-notebook-button app-save-stamp app-save-stamp--record", data: { turbo_submits_with: "Salvando…" } do %>
-          <i class="bi bi-check2-circle" aria-hidden="true"></i> Salvar anotação
+          <span class="app-save-seal" aria-hidden="true"><i class="bi bi-check2"></i></span> Salvar anotação
         <% end %>
       </div>
     </div>
