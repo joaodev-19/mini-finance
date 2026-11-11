@@ -7,8 +7,8 @@
       <h1 id="categories-title">Categorias<span aria-hidden="true">.</span></h1>
       <p class="app-notebook-subtitle">Um lugar para cada tipo de anotação.</p>
     </div>
-    <%= link_to new_category_path, class: "app-notebook-button" do %>
-      <i class="bi bi-plus-lg" aria-hidden="true"></i> Adicionar categoria
+    <%= link_to new_category_path, class: "app-notebook-button app-paper-action " do %>
+      <span class="app-action-content"><i class="bi bi-folder-plus" aria-hidden="true"></i> Adicionar categoria</span>
     <% end %>
   </header>
 
@@ -22,7 +22,7 @@
   <section class="app-notebook-paper" aria-labelledby="categories-list-title">
     <div class="app-notebook-section-heading">
       <h2 id="categories-list-title">As divisórias do caderno</h2>
-      <span><%= pluralize(@categories.size, "categoria", plural: "categorias") %></span>
+      <span class="app-paper-label"><%= pluralize(@categories.size, "categoria", plural: "categorias") %></span>
     </div>
     <div id="categories" class="app-notebook-category-list" role="region" aria-labelledby="categories-list-title">
       <% if @categories.any? %>
@@ -30,25 +30,25 @@
           <div class="app-notebook-category-row">
             <%= render category %>
             <div class="app-notebook-category-actions">
-              <%= link_to category, class: "app-notebook-detail", aria: { label: "Ver categoria #{category.name}" } do %>
-                Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              <%= link_to category, class: "app-notebook-detail app-page-marker", aria: { label: "Abrir categoria #{category.name}" } do %>
+                <span class="app-action-content"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Abrir</span>
               <% end %>
 
               <button 
                 type="button" 
-                class="app-notebook-delete" 
+                class="app-notebook-delete app-delete-sticker"
                 data-bs-toggle="modal" 
-                data-bs-target="#deleteModal"
+                data-bs-target="#deleteCategoryModal"
                 data-category-name="<%= category.name %>"
                 data-delete-url="<%= category_path(category) %>"
                 >
-                  <i class="bi bi-trash" aria-hidden="true"></i> Excluir
+                  <span class="app-action-content"><span class="app-paper-cross" aria-hidden="true">×</span> Excluir</span>
               </button>
             </div>
           </div>
         <% end %>
       <% else %>
-        <div class="app-notebook-empty">
+        <div class="app-notebook-empty app-paper-note">
           <i class="bi bi-tags" aria-hidden="true"></i>
           <h3>Cada anotação no seu lugar</h3>
           <p>Adicione sua primeira categoria para organizar os lançamentos.</p>
@@ -66,7 +66,7 @@
   document.addEventListener("show.bs.modal", (e) => {
     const modal = e.target;
 
-    if (modal.id !== "deleteModal") return;
+    if (modal.id !== "deleteCategoryModal") return;
 
     const trigger = event.relatedTarget;
     if (!trigger) return;
@@ -86,4 +86,6 @@
   });
 </script>
 
-<%= render "shared/confirm_modal" %>
+<%= render "shared/delete_modal",
+    modal_id: "deleteCategoryModal",
+    label: "categoria" %>

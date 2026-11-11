@@ -1,0 +1,66 @@
+<% record = local_assigns[:record] %>
+<% name = local_assigns[:name] %>
+
+<% modal_id = local_assigns[:modal_id] || dom_id(record, :delete_modal) %>
+<% form_id = record ? "#{modal_id}-form" : "delete-category-form" %>
+
+<% feminine = label == "categoria" %>
+<% article = feminine ? "Essa" : "Esse" %>
+<% removed = feminine ? "removida" : "removido" %>
+
+<div class="modal fade app-delete-modal-stationery"
+     tabindex="-1"
+     id="<%= modal_id %>"
+     aria-labelledby="<%= modal_id %>-title"
+     aria-describedby="<%= modal_id %>-description">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <div>
+          <p class="app-notebook-eyebrow" aria-hidden="true">
+            Meu caderno / confirmação
+          </p>
+
+          <h2 class="modal-title" id="<%= modal_id %>-title">
+            Excluir <%= label %>?
+          </h2>
+        </div>
+
+        <button type="button"
+                class="btn-close app-notebook-tape-close"
+                data-bs-dismiss="modal"
+                aria-label="Fechar">
+          <span class="app-notebook-tape-mark" aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="app-notebook-confirm-category">
+          <i class="bi <%= feminine ? 'bi-tag' : 'bi-journal-text' %>"
+             aria-hidden="true"></i>
+
+          <strong data-delete-name><%= name %></strong>
+        </div>
+
+        <p id="<%= modal_id %>-description">
+          <%= article %> <%= label %> será <%= removed %>
+          do seu caderno. Esta ação não poderá ser desfeita.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary app-notebook-paper-cancel" data-bs-dismiss="modal">Cancelar</button>
+
+        <%= button_to (record || "#"),
+            method: :delete,
+            form: { id: form_id },
+            class: "app-notebook-delete app-notebook-eraser",
+            disabled: record.nil? do %>
+          APAGAR
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

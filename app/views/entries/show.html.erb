@@ -6,7 +6,7 @@
   <% end %>
   <div class="app-notebook-paper">
     <header class="app-notebook-form-heading">
-      <p class="app-notebook-eyebrow">Detalhes do lançamento</p>
+      <p class="app-notebook-eyebrow app-paper-label">Detalhes do lançamento</p>
       <h1 id="entry-title"><%= @entry.title %></h1>
     </header>
 
@@ -43,17 +43,31 @@
     </dl>
 
     <div class="app-notebook-form-actions app-notebook-entry-actions">
-      <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>
+      <%= link_to entries_path, class: "app-notebook-detail app-back-marker" do %>
+        <span class="app-action-content"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar aos lançamentos</span>
+      <% end %>
       <div class="app-notebook-entry-action-buttons">
-        <%= button_to "Excluir",
-            entry_path(@entry),
-            method: :delete,
-            form: {
-              data: { turbo_confirm: "Deseja excluir este lançamento?" }
-            },
-            class: "app-notebook-delete" %>
-        <%= link_to "Editar", edit_entry_path(@entry), class: "app-notebook-button" %>
+          <button
+            type="button"
+            class="app-notebook-delete app-delete-sticker"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteEntryModal"
+            data-category-name="<%= @entry.title %>"
+            data-delete-url="<%= entries_path(@entry) %>"
+            >
+              <span class="app-action-content"><span class="app-paper-cross" aria-hidden="true">×</span> Excluir</span>
+          </button>
+
+        <%= link_to edit_entry_path(@entry), class: "app-notebook-button app-writing-action app-paper-action app-paper-action--write" do %>
+          <span class="app-action-content"><i class="bi bi-pencil" aria-hidden="true"></i> Editar</span>
+        <% end %>
       </div>
     </div>
   </div>
 </main>
+
+<%= render "shared/delete_modal",
+    record: @entry,
+    modal_id: "deleteEntryModal",
+    label: "lançamento",
+    name: @entry.title %>

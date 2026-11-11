@@ -1,9 +1,9 @@
 
-<%= form_with model: entry, class: "app-notebook app-notebook-form#{' app-notebook-new-entry' if entry.new_record?}" do |form| %>
+<%= form_with model: entry, class: "app-notebook-form#{' app-notebook-new-entry' if entry.new_record?}" do |form| %>
   <div class="app-notebook-paper">
     <header class="app-notebook-form-heading">
-      <p class="app-notebook-eyebrow"><i class="bi bi-pencil-square" aria-hidden="true"></i> No meu caderno</p>
-      <h2><%= entry.persisted? ? "Revisar anotação" : "Uma nova anotação" %></h2>
+      <p class="app-notebook-eyebrow app-paper-label"><i class="bi bi-pencil-square" aria-hidden="true"></i> No meu caderno</p>
+      <h1 id="entry-form-title"><%= entry.persisted? ? "Revisar anotação" : "Uma nova anotação" %></h1>
       <p class="app-notebook-subtitle">Registre os detalhes para lembrar depois.</p>
     </header>
 
@@ -39,7 +39,9 @@
             { prompt: "Selecione uma categoria" },
             { class: "form-select", required: true } %>
             <div class="mt-2 ms-1">
-              <%= link_to "Adicionar categoria", categories_path, class: "text-muted" %>
+              <%= link_to categories_path, class: "app-notebook-detail app-back-marker" do %>
+                <span class="app-action-content"><i class="bi bi-folder-plus" aria-hidden="true"></i> Adicionar categoria</span>
+              <% end %>
             </div>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
@@ -58,12 +60,21 @@
     </div>
     <div class="app-notebook-form-actions">
       <span class="app-notebook-form-hint"><i class="bi bi-journal-check" aria-hidden="true"></i> Cada detalhe conta.</span>
-      <% if entry.new_record? %>
-        <%= link_to "Voltar aos lançamentos", entries_path, class: "app-notebook-detail" %>
-      <% else %>
-        <%= link_to "Voltar ao lançamento", entry, class: "app-notebook-detail" %>
-      <% end %>
-      <%= form.submit "Salvar anotação", class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
+      <div class="app-notebook-form-buttons">
+        <% if entry.new_record? %>
+          <%= link_to entries_path, class: "app-notebook-detail app-back-marker" do %>
+            <span class="app-action-content"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar aos lançamentos</span>
+          <% end %>
+        <% else %>
+          <%= link_to entry, class: "app-notebook-detail app-back-marker" do %>
+            <span class="app-action-content"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao lançamento</span>
+          <% end %>
+        <% end %>
+        <%= form.button type: "submit", name: "commit", value: "Salvar anotação",
+            class: "app-notebook-button app-save-stamp app-save-stamp--record", data: { turbo_submits_with: "Salvando…" } do %>
+          <i class="bi bi-check2-circle" aria-hidden="true"></i> Salvar anotação
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

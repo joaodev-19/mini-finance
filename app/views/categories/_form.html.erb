@@ -24,6 +24,6 @@
 
   <div class="app-notebook-form-actions justify-content-end">
     <%= form.submit category.persisted? ? "Salvar alterações" : "Adicionar categoria",
-        class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
+        class: "app-notebook-button app-save-stamp", data: { turbo_submits_with: "Salvando…" } %>
   </div>
 <% end %>

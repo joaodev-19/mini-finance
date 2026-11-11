@@ -1,0 +1,72 @@
+// Physical notebook finish. Remove this import to restore the plain shared surface.
+// Keep ancestors at z-index: auto so Bootstrap modals stay above their backdrop.
+.app-notebook-shell {
+  --notebook-cover: var(--note-accent-hover);
+  --notebook-page-edge: color-mix(in srgb, var(--note-paper) 92%, var(--note-line));
+  box-shadow:
+    0 4px 7px color-mix(in srgb, var(--note-ink) 5%, transparent),
+    0 16px 24px color-mix(in srgb, var(--note-ink) 7%, transparent);
+}
+
+// Painted before the tabs and the opaque sheet: one thin page block over a cover.
+.app-notebook-shell::before {
+  content: "";
+  position: absolute;
+  inset: 2px -4px -6px 1px;
+  border: 1px solid var(--note-line);
+  border-radius: inherit;
+  background: var(--notebook-page-edge);
+  box-shadow:
+    2px 2px 0 var(--note-paper),
+    3px 3px 0 var(--note-line),
+    6px 6px 0 1px var(--notebook-cover);
+  pointer-events: none;
+}
+
+.app-notebook-sheet {
+  --notebook-margin-start: 39px;
+  --notebook-margin-end: 40px;
+  --notebook-paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='.035'/%3E%3C/svg%3E");
+  // Texture and low-contrast ruling are backgrounds, never overlays on controls.
+  background:
+    linear-gradient(to right, transparent var(--notebook-margin-start), var(--note-margin) var(--notebook-margin-start), var(--note-margin) var(--notebook-margin-end), transparent var(--notebook-margin-end)),
+    var(--notebook-paper-grain) 0 0 / 96px 96px repeat,
+    repeating-linear-gradient(to bottom, transparent 0 27px, color-mix(in srgb, var(--note-accent) 8%, transparent) 27px 28px),
+    var(--note-paper);
+}
+
+// A shallow paper edge; the original corners and the hole pseudo-element stay intact.
+.app-notebook-sheet::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 1px);
+  right: 8px;
+  left: 8px;
+  height: 3px;
+  background: var(--note-paper);
+  mask: var(--notebook-torn-edge) 0 0 / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+@media (max-width: 575.98px) {
+  .app-notebook-sheet {
+    --notebook-margin-start: 19px;
+    --notebook-margin-end: 20px;
+  }
+}
+
+@media (forced-colors: active) {
+  .app-notebook-shell {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  .app-notebook-sheet {
+    background: Canvas;
+  }
+
+  .app-notebook-shell::before,
+  .app-notebook-sheet::after {
+    display: none;
+  }
+}

@@ -7,7 +7,7 @@
 
   <div class="app-notebook-paper">
     <header class="app-notebook-form-heading">
-      <p class="app-notebook-eyebrow"><%= category_icon(@category) %> Categoria do caderno</p>
+      <p class="app-notebook-eyebrow app-paper-label"><%= category_icon(@category) %> Categoria do caderno</p>
       <h1 id="category-title"><%= @category.name %></h1>
       <p class="app-notebook-subtitle">Uma divisória para organizar seus lançamentos.</p>
     </header>
@@ -18,8 +18,12 @@
       </div>
     </dl>
     <div class="app-notebook-form-actions">
-      <%= link_to "Voltar às categorias", categories_path, class: "app-notebook-detail" %>
-      <%= link_to "Editar categoria", edit_category_path(@category), class: "app-notebook-button" %>
+      <%= link_to categories_path, class: "app-notebook-detail app-back-marker" do %>
+        <span class="app-action-content"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar às categorias</span>
+      <% end %>
+      <%= link_to edit_category_path(@category), class: "app-notebook-button app-writing-action app-paper-action app-paper-action--write" do %>
+        <span class="app-action-content"><i class="bi bi-pencil" aria-hidden="true"></i> Editar categoria</span>
+      <% end %>
     </div>
   </div>
 </main>

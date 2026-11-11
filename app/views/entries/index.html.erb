@@ -7,8 +7,8 @@
       <h1 id="notebook-title">Lançamentos<span aria-hidden="true">.</span></h1>
       <p class="app-notebook-subtitle">As contas do dia a dia, uma anotação de cada vez.</p>
     </div>
-    <%= link_to new_entry_path, class: "app-notebook-button" do %>
-      <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo lançamento
+    <%= link_to new_entry_path, class: "app-notebook-button app-paper-action" do %>
+      <span class="app-action-content"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> Novo lançamento</span>
     <% end %>
   </header>
 
@@ -20,15 +20,15 @@
     <div class="app-notebook-section-heading app-notebook-entries-heading">
       <h2 id="notebook-notes-title">Minhas anotações</h2>
       <div class="app-notebook-heading-actions">
-        <span class="app-notebook-entry-count"><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
+        <span class="app-notebook-entry-count app-paper-label"><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
         <div class="dropdown">
           <% active_filter_count = [params[:category], params[:kind]].count(&:present?) %>
-          <button type="button" id="entry-filters-toggle" class="app-notebook-filter-toggle dropdown-toggle"
+          <button type="button" id="entry-filters-toggle" class="app-notebook-filter-toggle dropdown-toggle app-paper-action app-paper-action--filter"
                   data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-controls="entry-filters-menu">
-            <i class="bi bi-sliders" aria-hidden="true"></i>
-            Filtros<%= " (#{active_filter_count})" if active_filter_count.positive? %>
+            <span class="app-action-content"><i class="bi bi-sliders" aria-hidden="true"></i>
+              Filtros<%= " (#{active_filter_count})" if active_filter_count.positive? %></span>
           </button>
-          <div id="entry-filters-menu" class="dropdown-menu dropdown-menu-end app-notebook-filter-menu" aria-labelledby="entry-filters-toggle">
+          <div id="entry-filters-menu" class="dropdown-menu dropdown-menu-end app-notebook-filter-menu app-paper-note" aria-labelledby="entry-filters-toggle">
             <%= form_with url: entries_path, method: :get, class: "app-notebook-filters" do |form| %>
               <div class="app-notebook-filter-field">
                 <%= form.label :category, "Categoria", class: "form-label" %>
@@ -44,7 +44,7 @@
               </div>
               <div class="app-notebook-filter-actions">
                 <%= link_to "Limpar filtros", entries_path, class: "app-notebook-filter-clear" %>
-                <%= form.submit "Aplicar", class: "app-notebook-button", data: { turbo_submits_with: "Aplicando…" } %>
+                <%= form.submit "Aplicar", class: "app-notebook-button app-save-stamp app-save-stamp--compact", data: { turbo_submits_with: "Aplicando…" } %>
               </div>
             <% end %>
           </div>
@@ -57,14 +57,14 @@
           <div class="app-notebook-row">
             <%= render entry %>
 
-            <%= link_to entry, class: "app-notebook-detail",
-                aria: { label: "Ver lançamento: #{entry.title}" } do %>
-              Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            <%= link_to entry, class: "app-notebook-detail app-page-marker",
+                aria: { label: "Abrir lançamento: #{entry.title}" } do %>
+              <span class="app-action-content"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Abrir</span>
             <% end %>
           </div>
         <% end %>
       <% else %>
-        <div class="app-notebook-empty">
+        <div class="app-notebook-empty app-paper-note">
           <% if params[:category].present? || params[:kind].present? %>
             <i class="bi bi-search" aria-hidden="true"></i>
             <h3>Nenhum lançamento encontrado</h3>

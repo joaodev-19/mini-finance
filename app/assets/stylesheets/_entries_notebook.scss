@@ -1,27 +1,9 @@
-// Styles belong only to the entries notebook and its shared partials.
+// Notebook shell and page components. Materials and modals have their own partials.
 // Keep the sheet in place when only one section needs a page scrollbar.
 html {
   scrollbar-gutter: stable;
 }
 
-.app-notebook-shell,
-.app-notebook,
-.app-note-entry,
-.modal[id="deleteModal"] {
-  --note-paper: #fffcf4;
-  --note-ink: #343b32;
-  --note-muted: #6c7063;
-  --note-accent: #4d6043;
-  --note-accent-hover: #394b30;
-  --note-line: #e5e4d8;
-  --note-margin: #e6bcb0;
-  --note-soft: #eeeee2;
-  --note-error: #8b352d;
-  --note-income: #41694d;
-  --note-expense: #a44e49;
-  --note-shadow: 0 12px 40px #343b320d, 3px 4px 0 #f1eee4, 4px 5px 0 #dfddcf;
-  color: var(--note-ink);
-}
 
 .app-notebook {
   max-width: 920px;
@@ -48,7 +30,8 @@ html {
   min-width: 0;
   padding: 32px 32px 24px 64px;
   border-radius: inherit;
-  background: linear-gradient(to right, transparent 39px, var(--note-margin) 39px, var(--note-margin) 40px, transparent 40px);
+  // This later positioned sibling covers the tabs' 5px inset without trapping modals.
+  background: linear-gradient(to right, transparent 39px, var(--note-margin) 39px, var(--note-margin) 40px, transparent 40px), var(--note-paper);
   overflow-wrap: anywhere;
 }
 
@@ -94,19 +77,21 @@ html {
 }
 
 .app-notebook-tabs {
+  --note-divider-paper: #d6dfce;
+  --note-divider-future: #e6deca;
   position: absolute;
-  right: 12px;
-  bottom: 100%;
-  z-index: 1;
-  max-width: calc(100% - 24px);
-  height: var(--notebook-tabs-height);
+  top: -42px;
+  right: 13px;
+  z-index: 0;
+  max-width: calc(100% - 26px);
+  height: 47px;
 }
 
 .app-notebook-tabs-list {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  gap: 5px;
+  gap: 3px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -123,40 +108,24 @@ html {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 36px;
-  padding: 8px 16px;
-  border: 1px solid #cfd4c3;
-  border-bottom: 0;
-  border-radius: 8px 12px 0 0;
-  background-color: #e5e9db;
+  min-height: 47px;
+  padding: 13px 17px 11px;
+  border: 0;
+  border-radius: 4px 4px 0 0;
+  background-color: var(--note-divider-paper);
+  box-shadow: none;
   color: var(--note-accent);
   font-size: .8rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
-  transition: background-color .15s ease, color .15s ease;
-}
-
-a.app-notebook-tab:hover {
-  background-color: var(--note-accent-hover);
-  color: var(--note-paper);
+  transition: transform 180ms ease, background-color 180ms ease;
 }
 
 .app-notebook-tab.app-notebook-tab-active {
-  border-color: var(--note-accent);
   background-color: var(--note-accent);
   color: #fff;
-}
-
-// A short colored lip sits over the sheet's edge like a paper divider.
-.app-notebook-tab-active::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  bottom: -3px;
-  left: -1px;
-  height: 4px;
-  border-radius: 0 0 2px 2px;
-  background-color: inherit;
-  pointer-events: none;
 }
 
 .app-notebook-tab:focus-visible {
@@ -166,19 +135,21 @@ a.app-notebook-tab:hover {
 }
 
 .app-notebook-tab-future {
-  border-color: var(--note-line);
-  background-color: var(--note-soft);
+  background-color: var(--note-divider-future);
   color: var(--note-muted);
+  opacity: .8;
+  cursor: default;
 }
 
 .app-notebook-tab-future small {
-  font-size: .6rem;
+  font-size: .62rem;
+  opacity: .8;
 }
 
 @media (max-width: 575.98px) {
   .app-notebook-sheet {
     padding: 28px 16px 20px 32px;
-    background: linear-gradient(to right, transparent 19px, var(--note-margin) 19px, var(--note-margin) 20px, transparent 20px);
+    background: linear-gradient(to right, transparent 19px, var(--note-margin) 19px, var(--note-margin) 20px, transparent 20px), var(--note-paper);
   }
 
   .app-notebook-sheet::before {
@@ -187,31 +158,25 @@ a.app-notebook-tab:hover {
     background-size: 6px 48px;
   }
 
+}
+
+@media (max-width: 600px) {
   .app-notebook-tabs {
-    right: 6px;
-    max-width: calc(100% - 12px);
+    right: 5px;
+    max-width: calc(100% - 10px);
   }
 
   .app-notebook-tabs-list {
-    gap: 3px;
+    gap: 2px;
   }
 
   .app-notebook-tab {
-    gap: 0;
-    padding: 8px 6px;
+    padding: 12px 8px 11px;
     font-size: .7rem;
   }
 
-  .app-notebook-tab-future {
-    flex-direction: column;
-    padding-top: 3px;
-    padding-bottom: 3px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .app-notebook-tab {
-    transition: none;
+  .app-notebook-tab-future small {
+    display: none;
   }
 }
 
@@ -239,7 +204,7 @@ a.app-notebook-tab:hover {
 .app-notebook h1,
 .app-notebook-form-heading h2,
 .app-notebook-empty h3 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--note-font-serif);
   font-weight: 400;
   letter-spacing: -.045em;
 }
@@ -267,7 +232,7 @@ a.app-notebook-tab:hover {
   min-height: 48px;
   padding: 12px 20px;
   border: 1px solid var(--note-accent);
-  border-radius: 8px;
+  border-radius: 3px 6px 4px 3px;
   background: var(--note-accent);
   color: var(--note-paper);
   font: inherit;
@@ -275,11 +240,14 @@ a.app-notebook-tab:hover {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--note-ink) 16%, transparent);
+  transition: background-color var(--note-motion-fast) ease, box-shadow var(--note-motion-fast) ease;
 }
 
 .app-notebook-button:hover {
   background: var(--note-accent-hover);
   color: var(--note-paper);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--note-ink) 16%, transparent);
 }
 
 .app-notebook-button:disabled {
@@ -357,12 +325,13 @@ a.app-notebook-tab:hover {
   min-height: 36px;
   padding: 7px 12px;
   border: 1px solid var(--note-line);
-  border-radius: 6px;
+  border-radius: 2px 5px 3px 2px;
   background: var(--note-paper);
   color: var(--note-accent);
   font: inherit;
   font-size: .8rem;
   cursor: pointer;
+  transition: background-color var(--note-motion-fast) ease, border-color var(--note-motion-fast) ease;
 }
 
 .app-notebook-filter-toggle:hover,
@@ -382,7 +351,8 @@ a.app-notebook-tab:hover {
   --bs-dropdown-color: var(--note-ink);
   width: min(280px, calc(100vw - 64px));
   padding: 20px;
-  box-shadow: var(--note-shadow);
+  border-radius: 2px;
+  box-shadow: 0 5px 15px color-mix(in srgb, var(--note-ink) 10%, transparent);
 }
 
 .app-notebook-filters {
@@ -439,10 +409,11 @@ a.app-notebook-tab:hover {
   align-items: center;
   gap: 16px;
   border-bottom: 1px solid var(--note-line);
+  transition: background-color var(--note-motion-fast) ease;
 }
 
 .app-notebook-row:hover {
-  background: var(--note-soft);
+  background: color-mix(in srgb, var(--note-accent) 3%, transparent);
 }
 
 .app-note-entry {
@@ -555,6 +526,11 @@ a.app-notebook-tab:hover {
   line-height: 1.7;
 }
 
+.app-notebook-details > div {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--note-line);
+}
+
 .app-notebook-details .app-note-entry-amount {
   max-width: 100%;
   text-align: left;
@@ -583,6 +559,10 @@ a.app-notebook-tab:hover {
 
 .app-notebook-detail:hover {
   color: var(--note-accent-hover);
+}
+
+.app-notebook-detail .bi-arrow-up-right {
+  transition: transform var(--note-motion-fast) ease;
 }
 
 .app-notebook-paper-footer {
@@ -617,6 +597,14 @@ a.app-notebook-tab:hover {
   line-height: 1.8;
 }
 
+.app-notebook-empty.app-paper-note {
+  margin: var(--note-space-lg) 0;
+  padding: var(--note-space-xl) var(--note-space-lg);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 27px, color-mix(in srgb, var(--note-line) 50%, transparent) 27px 28px),
+    var(--note-paper);
+}
+
 .app-notebook-notice {
   display: flex;
   align-items: baseline;
@@ -625,9 +613,10 @@ a.app-notebook-tab:hover {
   border: 1px solid var(--note-line);
   border-radius: 8px;
   background: var(--note-soft);
+  border-left: 3px solid var(--note-accent);
+  border-radius: 2px;
 }
 
-.app-notebook-form,
 .app-notebook-show {
   max-width: 720px;
 }
@@ -645,7 +634,7 @@ a.app-notebook-tab:hover {
   margin-bottom: 32px;
 }
 
-.app-notebook-form-heading h2 {
+.app-notebook-form-heading :is(h1, h2) {
   margin-bottom: 12px;
   font-size: clamp(1.75rem, 5vw, 2.25rem);
 }
@@ -669,9 +658,10 @@ a.app-notebook-tab:hover {
 .app-notebook-field :is(.form-control, .form-select) {
   min-height: 48px;
   border-color: var(--note-muted);
-  border-radius: 6px;
+  border-radius: 2px 5px 3px 2px;
   background-color: var(--note-paper);
   color: var(--note-ink);
+  box-shadow: inset 0 -2px 0 var(--note-soft);
 }
 
 .app-notebook-field .form-control::placeholder {
@@ -719,6 +709,16 @@ a.app-notebook-tab:hover {
 .app-notebook-form-hint {
   color: var(--note-muted);
   font: italic .875rem Georgia, serif;
+}
+
+.app-notebook-form-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 100%;
+  margin-left: auto;
 }
 
 .app-notebook-entry-actions > .app-notebook-detail {
@@ -772,6 +772,12 @@ a.app-notebook-tab:hover {
   gap: 8px 16px;
   padding: 20px 0;
   border-bottom: 1px solid var(--note-line);
+  transition: background-color var(--note-motion-fast) ease;
+}
+
+.app-notebook-category-row:focus-within,
+.app-notebook-category-row:hover {
+  background: color-mix(in srgb, var(--note-accent) 3%, transparent);
 }
 
 .app-notebook-category {
@@ -789,7 +795,8 @@ a.app-notebook-tab:hover {
   width: 44px;
   height: 44px;
   border: 1px solid var(--note-line);
-  border-radius: 50%;
+  border-left: 3px solid var(--note-accent);
+  border-radius: 3px 3px 12px 3px;
   background: var(--note-soft);
   color: var(--note-accent);
 }
@@ -831,150 +838,6 @@ a.app-notebook-tab:hover {
   outline-offset: 4px;
 }
 
-// The existing confirmation modal shares the notebook's palette and typography.
-.modal[id="deleteModal"] {
-  --bs-modal-width: 480px;
-  --bs-modal-bg: var(--note-paper);
-  --bs-modal-color: var(--note-ink);
-  --bs-modal-border-color: var(--note-line);
-  --bs-modal-border-radius: 10px;
-  --bs-modal-inner-border-radius: 9px;
-  --bs-modal-header-border-color: var(--note-line);
-  --bs-modal-footer-border-color: var(--note-line);
-  --bs-modal-padding: 24px;
-  --bs-modal-header-padding: 24px 24px 24px 40px;
-  font-family: var(--bs-font-sans-serif);
-
-  .modal-content {
-    box-shadow: 0 4px 16px color-mix(in srgb, var(--note-ink) 10%, transparent);
-  }
-
-  .modal-content::before {
-    content: "";
-    position: absolute;
-    top: 20px;
-    bottom: 20px;
-    left: 20px;
-    width: 1px;
-    background: var(--note-margin);
-    pointer-events: none;
-  }
-
-  .modal-header {
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .app-notebook-eyebrow {
-    margin: 0 0 8px;
-    font-size: .65rem;
-  }
-
-  .modal-title {
-    min-width: 0;
-    font: 400 1.75rem / 1.2 Georgia, "Times New Roman", serif;
-    letter-spacing: -.045em;
-    overflow-wrap: anywhere;
-  }
-
-  .btn-close {
-    flex-shrink: 0;
-  }
-
-  .modal-body {
-    padding-left: 40px;
-  }
-
-  .app-notebook-confirm-category {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 16px;
-    color: var(--note-accent);
-    overflow-wrap: anywhere;
-  }
-
-  .app-notebook-confirm-category i {
-    flex-shrink: 0;
-  }
-
-  .app-notebook-confirm-category strong {
-    min-width: 0;
-  }
-
-  .modal-body p {
-    margin: 0;
-    color: var(--note-muted);
-    font-size: .9rem;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
-  }
-
-  .modal-footer {
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 16px 24px 24px 40px;
-  }
-
-  .modal-footer > * {
-    margin: 0;
-  }
-
-  .btn-secondary {
-    --bs-btn-color: var(--note-ink);
-    --bs-btn-bg: var(--note-soft);
-    --bs-btn-border-color: var(--note-line);
-    --bs-btn-hover-color: var(--note-ink);
-    --bs-btn-hover-bg: var(--note-line);
-    --bs-btn-hover-border-color: var(--note-muted);
-    --bs-btn-active-color: var(--note-ink);
-    --bs-btn-active-bg: var(--note-line);
-    --bs-btn-active-border-color: var(--note-muted);
-  }
-
-  .modal-footer :is(.btn, .app-notebook-delete) {
-    min-width: 88px;
-    min-height: 44px;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: .875rem;
-    font-weight: 600;
-    transition: none;
-  }
-
-  .app-notebook-delete {
-    border-color: var(--note-expense);
-    background: var(--note-expense);
-    color: #fff;
-  }
-
-  .app-notebook-delete:hover:not(:disabled),
-  .app-notebook-delete:active:not(:disabled) {
-    border-color: var(--note-error);
-    background: var(--note-error);
-  }
-
-  .app-notebook-delete:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-  }
-
-  :is(.btn, .app-notebook-delete, .btn-close):focus-visible {
-    outline: 3px solid var(--note-accent);
-    outline-offset: 3px;
-    box-shadow: none;
-  }
-
-  @media (max-width: 575.98px) {
-    .modal-footer > * {
-      flex: 1 1 100%;
-    }
-
-    .modal-footer .app-notebook-delete {
-      width: 100%;
-    }
-  }
-}
 
 .app-notebook-category-back {
   margin-bottom: 24px;
@@ -988,10 +851,6 @@ a.app-notebook-tab:hover {
 
 .app-notebook-categories .app-notebook-category-row {
   padding: 12px 0;
-}
-
-.app-notebook-categories .app-notebook-empty {
-  padding: 24px 8px;
 }
 
 @media (max-width: 991.98px) {
@@ -1070,8 +929,33 @@ a.app-notebook-tab:hover {
     width: 100%;
   }
 
+  .app-notebook-form-buttons {
+    flex-basis: 100%;
+  }
+
   .app-notebook-paper-footer {
     font-size: .75rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  a.app-notebook-tab:hover {
+    transform: translateY(-5px);
+  }
+
+  .app-notebook-detail:hover .bi-arrow-up-right {
+    transform: translate(1px, -1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-notebook-tab,
+  .app-notebook-row,
+  .app-notebook-category-row,
+  .app-notebook-button,
+  .app-notebook-filter-toggle,
+  .app-notebook-detail .bi-arrow-up-right {
+    transition: none;
   }
 }
 

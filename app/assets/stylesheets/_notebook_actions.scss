@@ -1,0 +1,290 @@
+// Native page controls with paper surfaces. Modal controls intentionally use other classes.
+:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker) {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--note-space-sm);
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--note-accent);
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before {
+  @include stationery-label-surface;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transition: transform var(--note-motion-material) ease, box-shadow var(--note-motion-material) ease;
+  pointer-events: none;
+}
+
+.app-action-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--note-space-sm);
+  min-width: 0;
+  transition: transform var(--note-motion-material) ease;
+  pointer-events: none;
+}
+
+.app-paper-action {
+  --paper-action-surface: var(--note-accent);
+  --paper-action-ink: var(--note-paper);
+  min-height: 48px;
+  padding: 12px 16px;
+  color: var(--paper-action-ink);
+  font-size: .875rem;
+}
+
+.app-paper-action::before {
+  background: var(--stationery-grain) 0 0 / 80px 80px repeat, var(--paper-action-surface);
+}
+
+.app-paper-action::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: color-mix(in srgb, var(--note-paper) 22%, transparent);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+// Creation keeps one small cut corner, rather than a torn silhouette.
+.app-notebook-header .app-paper-action::before {
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%);
+}
+
+.app-notebook-header .app-paper-action::after {
+  content: none;
+}
+
+.app-paper-action--divider,
+.app-paper-action--write,
+.app-paper-action--filter {
+  --paper-action-surface: var(--note-divider-paper);
+  --paper-action-ink: var(--note-accent);
+}
+
+.app-paper-action--write {
+  --paper-action-surface: var(--stationery-label-surface);
+}
+
+.app-paper-action--filter {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: .8rem;
+}
+
+.app-paper-action--filter::after {
+  content: "";
+  position: static;
+  width: 0;
+  height: 0;
+  margin-left: .255em;
+  border-top: .3em solid;
+  border-right: .3em solid transparent;
+  border-bottom: 0;
+  border-left: .3em solid transparent;
+  background: none;
+  clip-path: none;
+}
+
+.app-paper-action:hover,
+.app-paper-action[aria-expanded="true"] {
+  background: transparent;
+  box-shadow: none;
+  color: var(--paper-action-ink);
+}
+
+.app-delete-sticker {
+  color: var(--note-error);
+}
+
+.app-delete-sticker:hover {
+  background: transparent;
+  color: var(--note-error);
+}
+
+.app-delete-sticker::after {
+  content: "";
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--note-soft);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.app-paper-cross {
+  color: var(--note-error);
+  font: italic 1.4rem / 1 var(--note-font-serif);
+  transform: rotate(-8deg);
+}
+
+.app-page-marker {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.app-page-marker::before {
+  border-left: 2px solid color-mix(in srgb, var(--note-accent) 45%, transparent);
+  border-radius: 1px 4px 4px 1px;
+  background: var(--note-divider-paper);
+  clip-path: none;
+}
+
+.app-notebook-detail.app-back-marker {
+  padding: 8px 12px;
+  color: var(--note-muted);
+  font-weight: 400;
+}
+
+.app-back-marker::before {
+  background: var(--note-soft);
+  clip-path: polygon(6px 0, 100% 2%, 99% 100%, 6px 100%, 0 50%);
+}
+
+// Inputs remain native submit controls: no replacement button or hidden click layer.
+.app-notebook-button.app-save-stamp {
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid var(--note-accent);
+  border-radius: 3px;
+  background: var(--note-divider-paper);
+  box-shadow: none;
+  color: var(--note-accent);
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .015em;
+  transition: transform var(--note-motion-fast) ease, background-color var(--note-motion-fast) ease;
+}
+
+.app-save-stamp:hover:not(:disabled) {
+  background: var(--note-soft);
+  color: var(--note-accent-hover);
+}
+
+.app-notebook-button.app-save-stamp--compact {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: .75rem;
+}
+
+// A fine inner frame suggests stamped ink without changing the submit hit area.
+.app-notebook-button.app-save-stamp--record {
+  border: 2px solid var(--note-accent);
+  border-radius: 4px 3px 4px 3px;
+  background: var(--note-paper);
+  box-shadow: inset 0 0 0 2px var(--note-paper), inset 0 0 0 3px color-mix(in srgb, var(--note-accent) 30%, transparent);
+  letter-spacing: .025em;
+}
+
+.app-save-stamp--record:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--note-accent) 4%, var(--note-paper));
+}
+
+.app-notebook-notice {
+  border: 1px dashed var(--note-accent);
+  border-left: 3px solid var(--note-accent);
+  background: var(--note-paper);
+  box-shadow: inset 0 0 0 3px var(--note-paper), inset 0 0 0 4px color-mix(in srgb, var(--note-accent) 12%, transparent);
+  color: var(--note-accent);
+}
+
+.app-notebook-errors {
+  border-left: 3px solid var(--note-error);
+  background: color-mix(in srgb, var(--note-expense) 5%, var(--note-paper));
+}
+
+:is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker, .app-save-stamp):focus-visible {
+  outline: 3px solid var(--note-accent);
+  outline-offset: 4px;
+}
+
+:is(.app-paper-action, .app-delete-sticker, .app-save-stamp):disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :is(.app-paper-action, .app-delete-sticker):hover:not(:disabled)::before,
+  :is(.app-paper-action, .app-delete-sticker):hover:not(:disabled) .app-action-content {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+
+  .app-notebook-header .app-paper-action:hover::before,
+  .app-notebook-header .app-paper-action:hover .app-action-content {
+    transform: translateY(-1px);
+  }
+
+  .app-back-marker:hover::before,
+  .app-back-marker:hover .app-action-content {
+    transform: translateX(-2px);
+  }
+
+  .app-page-marker:hover::before,
+  .app-page-marker:hover .app-action-content {
+    transform: translateX(4px);
+  }
+
+  .app-save-stamp--record:hover:not(:disabled) {
+    transform: translateY(-1px) rotate(-.4deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-save-stamp:active:not(:disabled) {
+    transform: translateY(2px);
+  }
+
+  .app-save-stamp--record:active:not(:disabled) {
+    transform: translateY(1px) scale(.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before,
+  .app-action-content,
+  .app-notebook-button.app-save-stamp {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker),
+  .app-notebook-button.app-save-stamp {
+    border: 1px solid ButtonText;
+    background: ButtonFace;
+    box-shadow: none;
+    color: ButtonText;
+  }
+
+  :is(.app-paper-action, .app-delete-sticker, .app-page-marker, .app-back-marker)::before,
+  :is(.app-paper-action, .app-delete-sticker)::after {
+    display: none;
+  }
+
+  .app-paper-cross {
+    color: ButtonText;
+  }
+}

@@ -1,0 +1,416 @@
+// A detached notebook sheet, scoped to the shared deletion confirmation modal.
+.modal.app-delete-modal-stationery {
+  --bs-modal-width: 480px;
+  --bs-modal-bg: var(--note-paper);
+  --bs-modal-color: var(--note-ink);
+  --bs-modal-border-color: transparent;
+  --bs-modal-border-radius: 2px;
+  --bs-modal-inner-border-radius: 2px;
+  --bs-modal-header-border-color: transparent;
+  --bs-modal-footer-border-color: transparent;
+  --bs-modal-padding: 24px;
+  --bs-modal-header-padding: 24px 24px 24px 40px;
+  font-family: var(--bs-font-sans-serif);
+
+  .modal-content {
+    margin-block: 16px;
+    border: 0;
+    border-radius: 2px 2px 0 0;
+    background:
+      linear-gradient(var(--note-margin), var(--note-margin)) 20px 20px / 1px calc(100% - 40px) no-repeat,
+      repeating-linear-gradient(to bottom,
+        transparent 0 27px,
+        color-mix(in srgb, var(--note-line) 55%, transparent) 27px 28px),
+      var(--note-paper);
+    box-shadow: none;
+    filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--note-ink) 16%, transparent));
+  }
+
+  // Mask only the decorative edges; the paper and controls remain unclipped.
+  .modal-content::before,
+  .modal-content::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 16px;
+    background: var(--note-paper);
+    mask-image: var(--notebook-torn-edge);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    pointer-events: none;
+  }
+
+  .modal-content::before {
+    bottom: calc(100% - 1px);
+    transform: rotate(180deg);
+  }
+
+  .modal-content::after {
+    top: calc(100% - 1px);
+  }
+
+  .modal-header {
+    position: relative;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .modal-header::before,
+  .modal-footer::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 92px;
+    height: 24px;
+    background: color-mix(in srgb, var(--note-accent) 12%, var(--note-paper));
+    clip-path: polygon(3% 0, 100% 5%, 97% 100%, 0 92%);
+    pointer-events: none;
+  }
+
+  .modal-header::before {
+    top: -12px;
+    left: 40px;
+    transform: rotate(-5deg);
+  }
+
+  .modal-footer::after {
+    right: 30px;
+    bottom: -12px;
+    transform: rotate(7deg);
+  }
+
+  .app-notebook-eyebrow {
+    margin: 0 0 8px;
+    font-size: .65rem;
+  }
+
+  .modal-title {
+    min-width: 0;
+    font: 400 1.75rem / 1.2 Georgia, "Times New Roman", serif;
+    letter-spacing: -.045em;
+    overflow-wrap: anywhere;
+  }
+
+  .btn-close {
+    flex-shrink: 0;
+  }
+
+  .modal-body {
+    padding-left: 40px;
+  }
+
+  .app-notebook-confirm-category {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--note-accent);
+    overflow-wrap: anywhere;
+  }
+
+  .app-notebook-confirm-category i {
+    flex-shrink: 0;
+  }
+
+  .app-notebook-confirm-category strong {
+    min-width: 0;
+  }
+
+  .modal-body p {
+    margin: 0;
+    color: var(--note-muted);
+    font-size: .9rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .modal-footer {
+    position: relative;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 24px 24px 40px;
+  }
+
+  .modal-footer > * {
+    margin: 0;
+  }
+
+  .btn-secondary {
+    --bs-btn-color: var(--note-ink);
+    --bs-btn-bg: var(--note-soft);
+    --bs-btn-border-color: var(--note-line);
+    --bs-btn-hover-color: var(--note-ink);
+    --bs-btn-hover-bg: var(--note-line);
+    --bs-btn-hover-border-color: var(--note-muted);
+    --bs-btn-active-color: var(--note-ink);
+    --bs-btn-active-bg: var(--note-line);
+    --bs-btn-active-border-color: var(--note-muted);
+  }
+
+  .modal-footer :is(.btn, .app-notebook-delete) {
+    min-width: 88px;
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: .875rem;
+    font-weight: 600;
+    transition: none;
+  }
+
+  .app-notebook-delete {
+    border-color: var(--note-expense);
+    background: var(--note-expense);
+    color: #fff;
+  }
+
+  .app-notebook-delete:hover:not(:disabled),
+  .app-notebook-delete:active:not(:disabled) {
+    border-color: var(--note-error);
+    background: var(--note-error);
+  }
+
+  .app-notebook-delete:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  :is(.btn, .app-notebook-delete, .btn-close):focus-visible {
+    outline: 3px solid var(--note-accent);
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  @media (max-width: 575.98px) {
+    .modal-footer > * {
+      flex: 1 1 100%;
+    }
+
+    .modal-footer .app-notebook-delete {
+      width: 100%;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .modal-content {
+      border: 1px solid CanvasText;
+      background: Canvas;
+      filter: none;
+    }
+
+    .modal-content::before,
+    .modal-content::after,
+    .modal-header::before,
+    .modal-footer::after {
+      display: none;
+    }
+  }
+}
+
+// Stationery controls shared by category and entry deletion confirmations.
+.modal.app-delete-modal-stationery {
+  --eraser-coral: var(--note-expense);
+  --eraser-blue: #829ba5;
+
+  .modal-header::before {
+    content: none;
+  }
+
+  .modal-footer::after {
+    right: auto;
+    left: 30px;
+    @include stationery-tape-surface;
+    clip-path: none;
+    transform: rotate(-7deg);
+  }
+
+  .app-notebook-tape-close {
+    position: absolute;
+    top: -18px;
+    right: 24px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: none;
+    color: var(--note-ink);
+    font-size: 1.5rem;
+    line-height: 1;
+    opacity: 1;
+    transform: rotate(7deg);
+    transition: transform var(--note-motion-material) ease;
+  }
+
+  .app-notebook-tape-close::before {
+    content: "";
+    position: absolute;
+    inset: 4px 0 8px;
+    z-index: -1;
+    @include stationery-tape-surface;
+    pointer-events: none;
+  }
+
+  // Unequal ink strokes sit above the tape; the native button keeps its full hit area.
+  .app-notebook-tape-mark {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    font-size: 0;
+    transform: rotate(-9deg);
+    pointer-events: none;
+  }
+
+  .app-notebook-tape-mark::before,
+  .app-notebook-tape-mark::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 16px;
+    height: 1.7px;
+    border-radius: 60% 25% 45% 15%;
+    background: currentColor;
+    transform: rotate(43deg);
+  }
+
+  .app-notebook-tape-mark::after {
+    top: 6px;
+    left: 1px;
+    width: 14px;
+    height: 2px;
+    transform: rotate(-49deg);
+  }
+
+  .modal-footer .app-notebook-paper-cancel {
+    --bs-btn-bg: transparent;
+    --bs-btn-hover-bg: transparent;
+    --bs-btn-active-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-active-border-color: transparent;
+    position: relative;
+    isolation: isolate;
+    min-width: 108px;
+    min-height: 48px;
+    border: 0;
+    border-radius: 2px;
+    font: italic 1rem Georgia, "Times New Roman", serif;
+    transform: rotate(-1deg);
+    transition: transform var(--note-motion-material) ease, box-shadow var(--note-motion-material) ease;
+  }
+
+  .app-notebook-paper-cancel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    @include stationery-label-surface;
+    pointer-events: none;
+  }
+
+  .app-notebook-paper-cancel::after {
+    content: "";
+    position: absolute;
+    inset: 6px 8px;
+    border: 1px solid color-mix(in srgb, var(--note-ink) 18%, transparent);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+  .app-notebook-paper-cancel:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .modal-footer .app-notebook-eraser {
+    position: relative;
+    justify-content: flex-start;
+    width: 152px;
+    min-height: 48px;
+    padding: 12px 44px 12px 18px;
+    border: 1px solid color-mix(in srgb, var(--note-ink) 16%, transparent);
+    border-radius: 7px;
+    background: var(--eraser-coral);
+    color: #fff;
+    box-shadow:
+      inset 0 -4px 0 color-mix(in srgb, var(--note-ink) 12%, transparent),
+      0 3px 4px color-mix(in srgb, var(--note-ink) 18%, transparent);
+    letter-spacing: .08em;
+    transform: rotate(-3deg);
+    transition: transform .16s ease;
+    cursor: pointer;
+  }
+
+  .app-notebook-eraser::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 32px;
+    border-left: 3px solid var(--note-paper);
+    border-radius: 0 6px 6px 0;
+    background: var(--eraser-blue);
+    box-shadow: inset 0 -4px 0 color-mix(in srgb, var(--note-ink) 12%, transparent);
+    pointer-events: none;
+  }
+
+  .modal-footer .app-notebook-eraser:hover:not(:disabled),
+  .modal-footer .app-notebook-eraser:active:not(:disabled) {
+    border-color: color-mix(in srgb, var(--note-ink) 16%, transparent);
+    background: var(--eraser-coral);
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .app-notebook-tape-close:hover {
+      transform: translateY(-4px) rotate(10deg);
+    }
+
+    .modal-footer .app-notebook-paper-cancel:hover {
+      transform: translateY(-2px) rotate(-2deg);
+      box-shadow: 0 3px 4px color-mix(in srgb, var(--note-ink) 10%, transparent);
+    }
+
+    .modal-footer form:hover .app-notebook-eraser:not(:disabled) {
+      transform: translateX(-5px) rotate(-5deg);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .modal-footer .app-notebook-eraser {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-notebook-tape-close,
+    .modal-footer .app-notebook-paper-cancel,
+    .modal-footer .app-notebook-eraser {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .app-notebook-tape-close,
+    .modal-footer .app-notebook-paper-cancel,
+    .modal-footer .app-notebook-eraser {
+      border: 1px solid ButtonText;
+      background: ButtonFace;
+      color: ButtonText;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .app-notebook-tape-close::before,
+    .app-notebook-paper-cancel::before,
+    .app-notebook-paper-cancel::after,
+    .app-notebook-eraser::before {
+      display: none;
+    }
+  }
+}
+
