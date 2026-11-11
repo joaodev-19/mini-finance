@@ -16,12 +16,13 @@
       <%= form.label :name, "Nome da categoria", class: "form-label" %>
       <%= form.text_field :name, class: "form-control", placeholder: "Ex.: Alimentação",
           aria: { describedby: "category-name-help" } %>
-      <p id="category-name-help" class="app-notebook-field-help">Escolha um nome fácil de reconhecer ao registrar um lançamento.</p>
+      <p id="category-name-help" class="app-notebook-field-help">
+        <%= category.persisted? ? "Ajuste o nome do lançamento para mantê-lo fácil de reconhecer." : "Escolha um nome fácil de reconhecer ao registrar um lançamento." %> 
+      </p>
     </div>
   </div>
 
   <div class="app-notebook-form-actions justify-content-end">
-    <%= link_to "Voltar para categorias", categories_path, class: "app-notebook-button" %>
     <%= form.submit category.persisted? ? "Salvar alterações" : "Adicionar categoria",
         class: "app-notebook-button", data: { turbo_submits_with: "Salvando…" } %>
   </div>

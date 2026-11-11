@@ -33,13 +33,17 @@
               <%= link_to category, class: "app-notebook-detail", aria: { label: "Ver categoria #{category.name}" } do %>
                 Ver <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
               <% end %>
-              <%= button_to category,
-                  method: :delete,
-                  form: { data: { turbo_confirm: "Excluir a categoria #{category.name}? Categorias com lançamentos não podem ser excluídas." } },
-                  class: "app-notebook-delete",
-                  aria: { label: "Excluir categoria #{category.name}" } do %>
-                <i class="bi bi-trash" aria-hidden="true"></i> Excluir
-              <% end %>
+
+              <button 
+                type="button" 
+                class="app-notebook-delete" 
+                data-bs-toggle="modal" 
+                data-bs-target="#deleteModal"
+                data-category-name="<%= category.name %>"
+                data-delete-url="<%= category_path(category) %>"
+                >
+                  <i class="bi bi-trash" aria-hidden="true"></i> Excluir
+              </button>
             </div>
           </div>
         <% end %>
@@ -57,3 +61,29 @@
     </footer>
   </section>
 </main>
+
+<script>
+  document.addEventListener("show.bs.modal", (e) => {
+    const modal = e.target;
+
+    if (modal.id !== "deleteModal") return;
+
+    const trigger = event.relatedTarget;
+    if (!trigger) return;
+
+    const name = trigger.dataset.categoryName;
+    const deleteUrl = trigger.dataset.deleteUrl;
+
+    const form = modal.querySelector("#delete-category-form");
+    const confirmButton = form?.querySelector(".app-notebook-delete");
+    const nameElement = modal.querySelector("[data-delete-name]");
+
+    if (!form || !confirmButton || !nameElement || !deleteUrl) return;
+
+    nameElement.textContent = name;
+    form.action = deleteUrl;
+    confirmButton.disabled = false;
+  });
+</script>
+
+<%= render "shared/confirm_modal" %>

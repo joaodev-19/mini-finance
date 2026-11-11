@@ -6,7 +6,8 @@ html {
 
 .app-notebook-shell,
 .app-notebook,
-.app-note-entry {
+.app-note-entry,
+.modal[id="deleteModal"] {
   --note-paper: #fffcf4;
   --note-ink: #343b32;
   --note-muted: #6c7063;
@@ -828,6 +829,94 @@ a.app-notebook-tab:hover {
 .app-notebook-delete:focus-visible {
   outline: 3px solid var(--note-accent);
   outline-offset: 4px;
+}
+
+// The existing confirmation modal shares the notebook's palette and typography.
+.modal[id="deleteModal"] {
+  --bs-modal-width: 480px;
+  --bs-modal-bg: var(--note-paper);
+  --bs-modal-color: var(--note-ink);
+  --bs-modal-border-color: var(--note-line);
+  --bs-modal-border-radius: 10px;
+  --bs-modal-inner-border-radius: 9px;
+  --bs-modal-header-border-color: var(--note-line);
+  --bs-modal-footer-border-color: var(--note-line);
+  --bs-modal-padding: 24px;
+  --bs-modal-header-padding: 24px;
+  font-family: var(--bs-font-sans-serif);
+
+  .modal-content {
+    border-top: 4px solid var(--note-accent);
+    box-shadow: var(--note-shadow);
+  }
+
+  .modal-header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .modal-title {
+    min-width: 0;
+    font: 400 1.75rem / 1.2 Georgia, "Times New Roman", serif;
+    letter-spacing: -.045em;
+    overflow-wrap: anywhere;
+  }
+
+  .btn-close {
+    flex-shrink: 0;
+  }
+
+  .modal-body p {
+    margin: 0;
+    color: var(--note-muted);
+    font-size: .9rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .modal-footer {
+    gap: 8px;
+    padding: 16px 24px 24px;
+  }
+
+  .modal-footer > * {
+    margin: 0;
+  }
+
+  .btn-secondary {
+    --bs-btn-color: var(--note-accent);
+    --bs-btn-bg: var(--note-soft);
+    --bs-btn-border-color: var(--note-line);
+    --bs-btn-hover-color: var(--note-paper);
+    --bs-btn-hover-bg: var(--note-accent);
+    --bs-btn-hover-border-color: var(--note-accent);
+    --bs-btn-active-color: var(--note-paper);
+    --bs-btn-active-bg: var(--note-accent-hover);
+    --bs-btn-active-border-color: var(--note-accent-hover);
+  }
+
+  .modal-footer :is(.btn, .app-notebook-delete) {
+    min-width: 88px;
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: .875rem;
+    font-weight: 600;
+    transition: none;
+  }
+
+  .app-notebook-delete:disabled {
+    background: var(--note-paper);
+    color: var(--note-error);
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  :is(.btn, .app-notebook-delete, .btn-close):focus-visible {
+    outline: 3px solid var(--note-accent);
+    outline-offset: 3px;
+    box-shadow: none;
+  }
 }
 
 .app-notebook-category-back {

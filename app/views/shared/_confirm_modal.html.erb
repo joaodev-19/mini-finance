@@ -1,0 +1,25 @@
+<div class="modal" tabindex="-1" id="deleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-delete-name=""></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Categorias removidas não podem ser recuperadas, deseja continuar?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+
+        <%= button_to "Sim", "#",
+            method: :delete,
+            form: {
+                id: "delete-category-form"
+            },
+            class: "app-notebook-delete",
+            disabled: true
+        %>
+      </div>
+    </div>
+  </div>
+</div>
