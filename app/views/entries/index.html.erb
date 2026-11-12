@@ -1,6 +1,9 @@
 <% content_for :title, "Meu caderno de lançamentos | Mini Finance" %>
+<% content_for :body_class, "app-notebook-listing" %>
 
-<main class="app-notebook" aria-labelledby="notebook-title">
+<main class="app-notebook app-notebook-index" aria-labelledby="notebook-title"
+      data-controller="notebook-pagination" data-notebook-pagination-per-page-value="<%= @pagination.per_page %>"
+      data-notebook-pagination-page-value="<%= @pagination.page %>">
   <header class="app-notebook-header">
     <div>
       <p class="app-notebook-eyebrow"><i class="bi bi-journal-text" aria-hidden="true"></i> Mini Finance / meu caderno</p>
@@ -20,7 +23,7 @@
     <div class="app-notebook-section-heading app-notebook-entries-heading">
       <h2 id="notebook-notes-title">Minhas anotações</h2>
       <div class="app-notebook-heading-actions">
-        <span class="app-notebook-entry-count app-paper-label"><%= pluralize(@entries.size, "lançamento", plural: "lançamentos") %></span>
+        <span class="app-notebook-entry-count app-paper-label"><%= pluralize(@pagination.total_count, "lançamento", plural: "lançamentos") %></span>
         <div class="dropdown">
           <% active_filter_count = [params[:category], params[:kind]].count(&:present?) %>
           <button type="button" id="entry-filters-toggle" class="app-notebook-filter-toggle dropdown-toggle app-paper-action app-paper-action--filter"
@@ -30,6 +33,18 @@
           </button>
           <div id="entry-filters-menu" class="dropdown-menu dropdown-menu-end app-notebook-filter-menu app-paper-note" aria-labelledby="entry-filters-toggle">
             <%= form_with url: entries_path, method: :get, class: "app-notebook-filters" do |form| %>
+              <%= form.hidden_field :per_page, value: @pagination.per_page %>
+              <div class="app-notebook-filter-field">
+                <%= form.label :search, "Pesquisar lançamento", class: "form-label" %>
+                <div class="app-notebook-filter-search">
+                  <i class="bi bi-search" aria-hidden="true"></i>
+                  <%= form.text_field :search,
+                      class: "form-control",
+                      placeholder: "Ex.: Supermercado",
+                      value: params[:search] %>
+                </div>
+              </div>
+              
               <div class="app-notebook-filter-field">
                 <%= form.label :category, "Categoria", class: "form-label" %>
                 <%= form.collection_select :category, @categories, :id, :name,
@@ -51,7 +66,8 @@
         </div>
       </div>
     </div>
-    <div id="entries" class="app-notebook-entries">
+    <div id="entries" class="app-notebook-entries app-notebook-page-rows" data-notebook-pagination-target="rows"
+         role="region" aria-labelledby="notebook-notes-title" tabindex="0">
       <% if @entries.any? %>
         <% @entries.each do |entry| %>
           <div class="app-notebook-row">
@@ -78,9 +94,6 @@
         </div>
       <% end %>
     </div>
-    <footer class="app-notebook-paper-footer">
-      <span>Pequenas anotações, mais clareza.</span>
-      <i class="bi bi-pencil" aria-hidden="true"></i>
-    </footer>
+    <%= render "shared/notebook_pagination", pagination: @pagination, label: "lançamentos" %>
   </section>
 </main>

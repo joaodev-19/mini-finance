@@ -1,6 +1,9 @@
 <% content_for :title, "Categorias | Mini Finance" %>
+<% content_for :body_class, "app-notebook-listing" %>
 
-<main class="app-notebook app-notebook-categories" aria-labelledby="categories-title">
+<main class="app-notebook app-notebook-categories app-notebook-index" aria-labelledby="categories-title"
+      data-controller="notebook-pagination" data-notebook-pagination-per-page-value="<%= @pagination.per_page %>"
+      data-notebook-pagination-page-value="<%= @pagination.page %>">
   <header class="app-notebook-header">
     <div>
       <p class="app-notebook-eyebrow"><i class="bi bi-tags" aria-hidden="true"></i> Mini Finance / meu caderno</p>
@@ -22,9 +25,10 @@
   <section class="app-notebook-paper" aria-labelledby="categories-list-title">
     <div class="app-notebook-section-heading">
       <h2 id="categories-list-title">As divisórias do caderno</h2>
-      <span class="app-paper-label"><%= pluralize(@categories.size, "categoria", plural: "categorias") %></span>
+      <span class="app-paper-label"><%= pluralize(@pagination.total_count, "categoria", plural: "categorias") %></span>
     </div>
-    <div id="categories" class="app-notebook-category-list" role="region" aria-labelledby="categories-list-title">
+    <div id="categories" class="app-notebook-category-list app-notebook-page-rows" data-notebook-pagination-target="rows"
+         role="region" aria-labelledby="categories-list-title" tabindex="0">
       <% if @categories.any? %>
         <% @categories.each do |category| %>
           <div class="app-notebook-category-row">
@@ -55,10 +59,7 @@
         </div>
       <% end %>
     </div>
-    <footer class="app-notebook-paper-footer">
-      <span>Um caderno organizado começa pelos detalhes.</span>
-      <i class="bi bi-bookmark" aria-hidden="true"></i>
-    </footer>
+    <%= render "shared/notebook_pagination", pagination: @pagination, label: "categorias" %>
   </section>
 </main>
 
@@ -68,7 +69,7 @@
 
     if (modal.id !== "deleteCategoryModal") return;
 
-    const trigger = event.relatedTarget;
+    const trigger = e.relatedTarget;
     if (!trigger) return;
 
     const name = trigger.dataset.categoryName;

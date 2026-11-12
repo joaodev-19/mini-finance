@@ -1,16 +1,11 @@
 <nav class="app-notebook-tabs" aria-label="Seções do caderno">
   <ul class="app-notebook-tabs-list">
-    <% [["Lançamentos", entries_path, "entries"], ["Categorias", categories_path, "categories"]].each do |label, path, section| %>
+    <% [["Lançamentos", entries_path, "entries"], ["Categorias", categories_path, "categories"], ["Painel de Controle", dashboard_index_path, "dashboard"]].each do |label, path, section| %>
       <li>
         <%= link_to label, path,
             class: "app-notebook-tab app-notebook-tab-#{section}#{' app-notebook-tab-active' if controller_name == section}",
             aria: { current: ("page" if controller_name == section) } %>
       </li>
     <% end %>
-    <li>
-      <span class="app-notebook-tab app-notebook-tab-future" aria-disabled="true" aria-label="Dashboard, em breve">
-        Dashboard <small>Em breve</small>
-      </span>
-    </li>
   </ul>
 </nav>

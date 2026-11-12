@@ -1,10 +1,13 @@
 class CategoriesController < ApplicationController
+  include NotebookPaginatable
+
   before_action :remember_entry_form, only: :index
   before_action :set_category, only: %i[ show edit update destroy ]
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.all
+    @categories = Category.order(:name, :id)
+    @categories = paginate_notebook(@categories) if request.format.html?
   end
 
   # GET /categories/1 or /categories/1.json

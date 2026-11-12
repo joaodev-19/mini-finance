@@ -1,0 +1,27 @@
+<% overdrawn = @income_consumn.present? && @income_consumn > 100 %>
+<section class="app-dashboard-consumption<%= ' app-dashboard-consumption--overdrawn' if overdrawn || (@income_consumn.nil? && @expense_entries_amount.positive?) %>"
+         aria-labelledby="dashboard-consumption-title" data-dashboard-label="Receita × despesa">
+  <div class="app-dashboard-section-heading">
+    <span class="app-dashboard-section-index" aria-hidden="true">02</span>
+    <h2 id="dashboard-consumption-title">Receita × despesa</h2>
+  </div>
+  <div class="app-dashboard-consumption-usage">
+    <% if @income_consumn.nil? %>
+      <p class="app-dashboard-consumption-empty">
+        <%= @expense_entries_amount.positive? ? "Sem receitas para comparar." : "Sem movimentação neste mês." %>
+        <span><%= @expense_entries_amount.positive? ? "Há despesas sem receitas registradas." : "A proporção aparece quando houver receitas." %></span>
+      </p>
+    <% else %>
+      <div class="app-dashboard-consumption-readout">
+        <p class="app-dashboard-consumption-percentage"><%= number_to_percentage(@income_consumn, precision: 1, separator: ",") %></p>
+        <span><%= overdrawn ? "Despesas acima das receitas" : "das receitas utilizadas" %></span>
+      </div>
+      <meter class="app-dashboard-highlighter app-dashboard-consumption-meter" min="0" max="100" value="<%= [@income_consumn, 100].min %>"
+             aria-label="Receitas utilizadas em despesas"
+             aria-valuetext="<%= number_to_percentage(@income_consumn, precision: 1, separator: ',') %> das receitas<%= ', acima do total recebido' if overdrawn %>">
+        <%= number_to_percentage(@income_consumn, precision: 1, separator: ",") %>
+      </meter>
+      <p class="app-dashboard-consumption-note"><strong><%= number_to_percentage(100 - @income_consumn, precision: 1, separator: ",") %></strong> da receita permanece como saldo registrado.</p>
+    <% end %>
+  </div>
+</section>

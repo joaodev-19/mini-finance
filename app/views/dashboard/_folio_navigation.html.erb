@@ -1,0 +1,33 @@
+<nav class="app-dashboard-folio" aria-label="Páginas do painel">
+  <div class="app-dashboard-folio-heading">
+    <span>Um mês, duas perspectivas</span>
+    <span class="app-dashboard-folio-position" role="status">Folha <%= page %> de 2</span>
+  </div>
+  <ol class="app-dashboard-folio-leaves">
+    <% [[1, "I", "Balanço do mês", "Resumo e comparação"], [2, "II", "Mapa das despesas", "Gastos por categoria"]].each do |number, numeral, title, description| %>
+      <li>
+        <% capture_content = capture do %>
+          <span class="app-dashboard-folio-ribbon" aria-hidden="true"><%= numeral %></span>
+          <span class="app-dashboard-folio-copy">
+            <span class="app-dashboard-folio-title"><%= title %></span>
+            <span class="app-dashboard-folio-description"><%= description %></span>
+          </span>
+          <% if page != number %>
+            <span class="app-dashboard-folio-turn" aria-hidden="true">
+              <span><%= number == 2 ? "Virar a folha" : "Voltar à síntese" %></span>
+              <i class="bi <%= number == 2 ? 'bi-arrow-right' : 'bi-arrow-left' %>"></i>
+            </span>
+          <% end %>
+        <% end %>
+        <% if page == number %>
+          <span class="app-dashboard-folio-leaf app-dashboard-folio-leaf--current" aria-current="page"><%= capture_content %></span>
+        <% else %>
+          <%= link_to dashboard_index_path(month: @selected_month.strftime("%Y-%m"), page: number),
+              class: "app-dashboard-folio-leaf", rel: (number == 2 ? "next" : "prev") do %>
+            <%= capture_content %>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+</nav>

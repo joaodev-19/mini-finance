@@ -1,0 +1,81 @@
+<section class="app-dashboard-summary" aria-labelledby="dashboard-summary-title" data-dashboard-label="Resumo do mês">
+  <div class="app-dashboard-section-heading app-dashboard-section-heading--summary">
+    <span class="app-dashboard-section-index" aria-hidden="true">01</span>
+    <h2 id="dashboard-summary-title">O mês em números</h2>
+  </div>
+  <div class="app-dashboard-summary-grid">
+    <article class="app-dashboard-slip app-dashboard-slip--income" aria-labelledby="dashboard-income-title">
+      <div class="app-dashboard-slip-heading">
+        <h3 id="dashboard-income-title">Receitas</h3>
+        <i class="bi bi-arrow-down-left" aria-hidden="true"></i>
+      </div>
+      <p class="app-dashboard-amount"><%= number_to_currency(@income_entries_amount, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+      <div class="app-dashboard-slip-footer">
+        <span>Entradas do mês</span>
+        <span><%= pluralize(@income_count, "receita", plural: "receitas") %></span>
+      </div>
+    </article>
+
+    <article class="app-dashboard-slip app-dashboard-slip--expense" aria-labelledby="dashboard-expense-title">
+      <div class="app-dashboard-slip-heading">
+        <h3 id="dashboard-expense-title">Despesas</h3>
+        <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+      </div>
+      <p class="app-dashboard-amount"><%= number_to_currency(@expense_entries_amount, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+      <div class="app-dashboard-slip-footer">
+        <span>Saídas do mês</span>
+        <span><%= pluralize(@expense_count, "despesa", plural: "despesas") %></span>
+      </div>
+    </article>
+
+    <article class="app-dashboard-slip app-dashboard-slip--balance" aria-labelledby="dashboard-balance-title">
+      <div class="app-dashboard-slip-heading">
+        <h3 id="dashboard-balance-title">Saldo</h3>
+        <span class="app-dashboard-balance-label">Fechamento</span>
+      </div>
+      <p class="app-dashboard-amount"><%= number_to_currency(@balance_amount, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+      <div class="app-dashboard-slip-footer">
+        <span>Receitas − despesas</span>
+        <span class="app-dashboard-balance-status"><%= @balance_amount.negative? ? "Saldo negativo" : (@balance_amount.zero? ? "Em equilíbrio" : "Saldo positivo") %></span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<%= render "dashboard/consumption" %>
+
+<section class="app-dashboard-comparison" aria-labelledby="dashboard-comparison-title" data-dashboard-label="Comparação mensal">
+  <div class="app-dashboard-section-heading">
+    <span class="app-dashboard-section-index" aria-hidden="true">03</span>
+    <h2 id="dashboard-comparison-title">Entre um mês e outro</h2>
+  </div>
+  <div class="app-dashboard-comparison-grid">
+    <% [["Receitas", @income_difference, @income_variation, :income], ["Despesas", @expense_difference, @expense_variation, :expense]].each do |label, difference, variation, kind| %>
+      <% trend = if difference.zero?
+        "neutral"
+      elsif (kind == :income && difference.positive?) || (kind == :expense && difference.negative?)
+        "favorable"
+      else
+        "attention"
+      end %>
+      <article class="app-dashboard-comparison-item app-dashboard-trend--<%= trend %>" aria-labelledby="dashboard-comparison-<%= kind %>" data-dashboard-label="Comparação: <%= label.downcase %>">
+        <div class="app-dashboard-comparison-heading">
+          <h3 id="dashboard-comparison-<%= kind %>"><%= label %></h3>
+          <span class="app-dashboard-trend">
+            <i class="bi <%= difference.zero? ? 'bi-arrow-right' : (difference.positive? ? 'bi-arrow-up-right' : 'bi-arrow-down-right') %>" aria-hidden="true"></i>
+            <%= difference.zero? ? "Sem alteração" : (difference.positive? ? "Aumento" : "Redução") %>
+          </span>
+        </div>
+        <div class="app-dashboard-comparison-values">
+          <p class="app-dashboard-difference"><%= "+" if difference.positive? %><%= number_to_currency(difference, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+          <% if variation.nil? %>
+            <p class="app-dashboard-no-comparison">Sem base percentual<br>de comparação</p>
+          <% else %>
+            <p class="app-dashboard-percentage"><%= "+" if variation.positive? %><%= number_to_percentage(variation, precision: 1, separator: ",") %></p>
+          <% end %>
+        </div>
+      </article>
+    <% end %>
+  </div>
+  <p class="app-dashboard-comparison-reference"><%= l(@selected_month.prev_month, format: "Em relação a %B de %Y") if @selected_month.present? %></p>
+</section>

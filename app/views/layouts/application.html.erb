@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
     <title><%= content_for(:title) || "Mini Finance" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,8 +17,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="app-paper-desk">
-    <div class="container p-4">
+  <body class="app-paper-desk <%= content_for(:body_class) %>">
+    <div class="container app-notebook-desk">
       <div class="app-notebook-shell">
         <%= render "shared/notebook_tabs" %>
         <div class="app-notebook-sheet">

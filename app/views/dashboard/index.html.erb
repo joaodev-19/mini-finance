@@ -1,2 +1,58 @@
-<h1>Dashboard#index</h1>
-<p>Find me in app/views/dashboard/index.html.erb</p>
+<% dashboard_page = params[:page].to_s == "2" ? 2 : 1 %>
+<% content_for :title, dashboard_page == 2 ? "Gastos por categoria | Mini Finance" : "Painel de Controle | Mini Finance" %>
+<% content_for :body_class, "app-dashboard-desk" %>
+
+<main class="app-notebook app-dashboard<%= ' app-dashboard--categories' if dashboard_page == 2 %>" aria-labelledby="notebook-title"
+      data-controller="dashboard-layout">
+  <header class="app-notebook-header app-dashboard-header">
+    <div class="app-dashboard-intro">
+      <p class="app-notebook-eyebrow"><i class="bi bi-journal-text" aria-hidden="true"></i> Mini Finance / painel de controle</p>
+      <h1 id="notebook-title">Visão Geral<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">Controle seus gastos de <%= l(@selected_month, format: "%B de %Y") if @selected_month.present? %>.</p>
+    </div>
+
+    <nav class="app-dashboard-calendar" aria-label="Navegação entre meses">
+      <%= link_to dashboard_index_path(month: @selected_month.prev_month.strftime("%Y-%m"), page: dashboard_page),
+          class: "app-dashboard-month-turn", rel: "prev", aria: { label: "Ver mês passado" } do %>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+      <% end %>
+      <time class="app-dashboard-month" datetime="<%= @selected_month.strftime('%Y-%m') %>">
+        <span class="app-dashboard-month-label">Página do mês</span>
+        <span class="app-dashboard-month-name"><%= l(@selected_month, format: "%B") %></span>
+        <span class="app-dashboard-month-year"><%= l(@selected_month, format: "%Y") %></span>
+      </time>
+      <%= link_to dashboard_index_path(month: @selected_month.next_month.strftime("%Y-%m"), page: dashboard_page),
+          class: "app-dashboard-month-turn", rel: "next", aria: { label: "Ver mês seguinte" } do %>
+        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      <% end %>
+    </nav>
+  </header>
+
+  <% if notice.present? %>
+    <p class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <%= notice %></p>
+  <% end %>
+
+  <div class="app-dashboard-content" data-dashboard-layout-target="content">
+    <% if dashboard_page == 1 %>
+      <div class="app-dashboard-balance" data-dashboard-layout-target="viewport" data-layout="deck"
+           data-action="scroll->dashboard-layout#updatePosition keydown->dashboard-layout#navigateWithKeyboard"
+           role="region" aria-label="Resumo financeiro e comparação mensal" tabindex="0">
+        <%= render "dashboard/balance" %>
+      </div>
+    <% else %>
+      <%= render "dashboard/distribution" %>
+    <% end %>
+  </div>
+
+  <div class="app-dashboard-content-navigation" aria-label="Continuação das anotações">
+    <span data-dashboard-layout-target="position" role="status"><%= dashboard_page == 1 ? "Resumo e comparação" : "Distribuição do mês" %></span>
+    <div class="app-dashboard-content-arrows" data-dashboard-layout-target="controls" hidden>
+      <button type="button" data-dashboard-layout-target="previous" data-action="dashboard-layout#previous"
+              aria-label="Anotações anteriores" disabled><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
+      <button type="button" data-dashboard-layout-target="next" data-action="dashboard-layout#next"
+              aria-label="Próximas anotações"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <%= render "dashboard/folio_navigation", page: dashboard_page %>
+</main>

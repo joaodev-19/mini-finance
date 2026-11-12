@@ -1,0 +1,323 @@
+// The folio is shared by categories and entries. Paper materials come from stationery.
+.app-notebook-desk {
+  padding: var(--note-space-lg);
+}
+
+html:has(.app-notebook-listing) {
+  scrollbar-gutter: auto;
+}
+
+.app-notebook-listing .app-notebook-desk {
+  height: 100dvh;
+  padding-block: var(--note-space-md) var(--note-space-lg);
+}
+
+.app-notebook-listing .app-notebook-shell {
+  height: calc(100% - var(--notebook-tabs-height));
+  margin-bottom: 0;
+}
+
+.app-notebook-listing .app-notebook-sheet {
+  height: 100%;
+  padding-block: var(--note-space-lg);
+}
+
+.app-notebook-index,
+.app-notebook-index .app-notebook-paper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.app-notebook-index .app-notebook-header {
+  flex: none;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--note-space-md);
+  margin-bottom: var(--note-space-lg);
+}
+
+.app-notebook-index .app-notebook-eyebrow {
+  margin-bottom: var(--note-space-sm);
+}
+
+.app-notebook-index h1 {
+  margin-bottom: var(--note-space-xs);
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.app-notebook-index .app-notebook-section-heading {
+  flex: none;
+  gap: var(--note-space-sm);
+  padding-bottom: var(--note-space-md);
+}
+
+.app-notebook-page-rows {
+  --notebook-row-height: 112px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--note-line) transparent;
+}
+
+.app-notebook-categories .app-notebook-page-rows {
+  --notebook-row-height: 76px;
+}
+
+.app-notebook-index :is(.app-notebook-row, .app-notebook-category-row) {
+  height: var(--notebook-row-height);
+  padding-block: var(--note-space-sm);
+  flex-wrap: nowrap;
+  gap: var(--note-space-sm);
+}
+
+.app-notebook-index .app-note-entry {
+  flex-wrap: nowrap;
+  padding-block: 0;
+  gap: var(--note-space-md);
+}
+
+.app-notebook-index :is(.app-note-entry-title, .app-note-entry-category, .app-note-entry-description) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-notebook-index .app-note-entry-title {
+  margin-bottom: var(--note-space-xs);
+}
+
+.app-notebook-index .app-note-entry-description {
+  margin-top: var(--note-space-xs);
+}
+
+.app-notebook-index .app-notebook-category-actions {
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+.app-notebook-index .app-notebook-detail {
+  flex-shrink: 0;
+}
+
+.app-notebook-index .app-notebook-notice,
+.app-notebook-index .app-notebook-errors {
+  flex: none;
+  margin-bottom: var(--note-space-md);
+  padding: var(--note-space-sm) var(--note-space-md);
+}
+
+.app-notebook-pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  flex: none;
+  gap: var(--note-space-sm);
+  padding-top: var(--note-space-md);
+  border-top: 1px solid var(--note-line);
+  color: var(--note-muted);
+}
+
+.app-notebook-pagination-summary {
+  margin: 0;
+  font-size: .75rem;
+}
+
+.app-notebook-pagination-pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--note-space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-notebook-page,
+.app-notebook-page-gap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 44px;
+  padding: var(--note-space-xs);
+  color: var(--note-accent);
+  font: italic 1.1rem var(--note-font-serif);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.app-notebook-page-gap {
+  min-width: 12px;
+  color: var(--note-muted);
+}
+
+.app-notebook-page-current {
+  isolation: isolate;
+  color: var(--note-ink);
+  font-weight: 700;
+}
+
+// An irregular pencil circle, with a small paper label behind the current folio.
+.app-notebook-page-current::before {
+  @include stationery-label-surface;
+  content: "";
+  position: absolute;
+  inset: 5px 0;
+  z-index: -1;
+}
+
+.app-notebook-page-current::after {
+  content: "";
+  position: absolute;
+  inset: 4px 1px;
+  border: 1px solid var(--note-accent);
+  border-radius: 46% 54% 48% 52%;
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+a.app-notebook-page:hover {
+  color: var(--note-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.app-notebook-page-turn {
+  font-size: 1rem;
+}
+
+.app-notebook-page[aria-disabled="true"] {
+  color: var(--note-muted);
+  opacity: .45;
+}
+
+.app-notebook-page-caption {
+  justify-self: end;
+  font: italic .875rem var(--note-font-serif);
+  white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+  .app-notebook-pagination {
+    grid-template-columns: 1fr auto;
+  }
+
+  .app-notebook-pagination-pages {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .app-notebook-page {
+    min-width: 44px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .app-notebook-listing .app-notebook-desk {
+    padding: var(--note-space-sm) var(--note-space-md) var(--note-space-lg);
+  }
+
+  .app-notebook-listing .app-notebook-sheet {
+    padding-block: var(--note-space-md);
+  }
+
+  .app-notebook-index .app-notebook-header {
+    align-items: flex-start;
+    gap: var(--note-space-sm);
+    margin-bottom: var(--note-space-md);
+  }
+
+  .app-notebook-index .app-notebook-eyebrow {
+    font-size: .65rem;
+  }
+
+  .app-notebook-index .app-notebook-subtitle {
+    font-size: .8rem;
+    line-height: 1.5;
+  }
+
+  .app-notebook-index .app-notebook-section-heading h2 {
+    font-size: 1.1rem;
+  }
+
+  .app-notebook-page-rows {
+    --notebook-row-height: 136px;
+  }
+
+  .app-notebook-categories .app-notebook-page-rows {
+    --notebook-row-height: 108px;
+  }
+
+  .app-notebook-index .app-note-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    flex-basis: auto;
+    gap: var(--note-space-xs);
+    min-width: 0;
+  }
+
+  .app-notebook-index .app-note-entry-amount {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .app-notebook-index .app-note-entry-meta {
+    gap: var(--note-space-sm);
+  }
+
+  .app-notebook-index .app-notebook-category-row {
+    flex-wrap: wrap;
+  }
+
+  .app-notebook-index .app-notebook-category-actions {
+    gap: var(--note-space-xs);
+  }
+
+  .app-notebook-pagination {
+    padding-top: var(--note-space-sm);
+  }
+
+  .app-notebook-pagination-pages {
+    gap: 0;
+  }
+
+  .app-notebook-page {
+    min-width: 44px;
+  }
+}
+
+// Keep page turning on a single line on narrow phones, even with long folios.
+@media (max-width: 399.98px) {
+  .app-notebook-pagination-number:not(.app-notebook-pagination-number-current) {
+    display: none;
+  }
+}
+
+// Very short viewports (including browser zoom) retain access to every control.
+@media (max-height: 539px) {
+  .app-notebook-listing .app-notebook-desk,
+  .app-notebook-listing .app-notebook-shell {
+    height: auto;
+  }
+
+  .app-notebook-page-rows {
+    flex: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .app-notebook-page-current {
+    outline: 2px solid Highlight;
+  }
+
+  .app-notebook-page-current::before,
+  .app-notebook-page-current::after {
+    display: none;
+  }
+}

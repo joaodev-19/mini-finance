@@ -367,16 +367,45 @@ html {
   font-size: .75rem;
 }
 
-.app-notebook-filters .form-select {
+.app-notebook-filters :is(.form-control, .form-select) {
   border-color: var(--note-line);
   background-color: var(--note-paper);
   color: var(--note-ink);
   font-size: .8rem;
 }
 
-.app-notebook-filters .form-select:focus {
+.app-notebook-filters :is(.form-control, .form-select):focus {
   border-color: var(--note-accent);
   box-shadow: 0 0 0 3px #4d60431a;
+}
+
+.app-notebook-filter-search {
+  position: relative;
+  min-width: 0;
+
+  .form-control {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding-inline-start: var(--note-space-xl);
+  }
+
+  .form-control::placeholder {
+    color: var(--note-muted);
+    opacity: 1;
+  }
+
+  > .bi-search {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 12px;
+    color: var(--note-muted);
+    font-size: .8rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &:focus-within > .bi-search { color: var(--note-accent); }
 }
 
 .app-notebook-filter-actions {

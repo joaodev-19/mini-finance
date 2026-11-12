@@ -1,0 +1,45 @@
+<section class="app-dashboard-distribution" aria-labelledby="dashboard-categories-title">
+  <div class="app-dashboard-section-heading">
+    <span class="app-dashboard-section-index" aria-hidden="true">04</span>
+    <div>
+      <h2 id="dashboard-categories-title">Gastos por categoria</h2>
+      <p class="app-dashboard-section-caption">Cada marca, uma parte das despesas do mês.</p>
+    </div>
+    <span class="app-dashboard-distribution-unit">Participação no total</span>
+  </div>
+
+  <% if @expenses_by_category.empty? %>
+    <div class="app-dashboard-empty">
+      <span class="app-dashboard-empty-mark" aria-hidden="true"><i class="bi bi-pencil" aria-hidden="true"></i></span>
+      <h3>Uma página sem despesas</h3>
+      <p>Não há despesas registradas neste mês.<br>As categorias aparecem aqui quando houver anotações.</p>
+    </div>
+  <% else %>
+    <ol class="app-dashboard-category-list" data-dashboard-layout-target="viewport" data-category-pages="true"
+        data-action="scroll->dashboard-layout#updatePosition keydown->dashboard-layout#navigateWithKeyboard"
+        role="list" aria-label="Gastos por categoria" tabindex="0">
+      <% @expenses_by_category.sort_by { |category, amount| -amount }.each_with_index do |(category, amount), index| %>
+        <% percentage = @expense_entries_amount.positive? ?
+          (amount / @expense_entries_amount) * 100 : 0 %>
+        <li class="app-dashboard-category<%= ' app-dashboard-category--leading' if index == 0 %>">
+          <div class="app-dashboard-category-heading">
+            <span class="app-dashboard-category-rank" aria-hidden="true"><%= (index + 1).to_s.rjust(2, "0") %></span>
+            <h3 id="dashboard-category-<%= index %>"><%= category %></h3>
+            <% if index == 0 %>
+              <span class="app-dashboard-leading-label">Maior gasto</span>
+            <% end %>
+            <p class="app-dashboard-category-amount"><%= number_to_currency(amount, unit: "R$ ", separator: ",", delimiter: ".") %></p>
+          </div>
+          <div class="app-dashboard-category-measure">
+            <meter class="app-dashboard-highlighter" min="0" max="100" value="<%= percentage %>"
+                   aria-labelledby="dashboard-category-<%= index %>"
+                   aria-valuetext="<%= number_to_percentage(percentage, precision: 1, separator: ',') %> do total de despesas">
+              <%= number_to_percentage(percentage, precision: 1, separator: ",") %>
+            </meter>
+            <span class="app-dashboard-category-percentage" aria-hidden="true"><%= number_to_percentage(percentage, precision: 1, separator: ",") %></span>
+          </div>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+</section>

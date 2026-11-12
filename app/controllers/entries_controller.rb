@@ -1,12 +1,16 @@
 class EntriesController < ApplicationController
+  include NotebookPaginatable
+
   before_action :set_entry, only: %i[ show edit update destroy ]
   before_action :set_categories, only: %i[index new edit create update]
 
   # GET /entries or /entries.json
   def index
-    @entries = Entry.includes(:category).order(occurred_on: :desc)
+    @entries = Entry.includes(:category).order(occurred_on: :desc, id: :desc)
+    @entries = @entries.filter_by_title(params[:search]) if params[:search].present?
     @entries = @entries.filter_by_category(params[:category]) if params[:category].present?
     @entries = @entries.filter_by_kind(params[:kind]) if params[:kind].present?
+    @entries = paginate_notebook(@entries) if request.format.html?
   end
 
   # GET /entries/1 or /entries/1.json
