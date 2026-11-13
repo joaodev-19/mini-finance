@@ -32,7 +32,7 @@ class EntriesController < ApplicationController
 
     respond_to do |format|
       if @entry.save
-        format.html { redirect_to @entry, notice: "Entry was successfully created." }
+        format.html { redirect_to @entry, notice: "Lançamento criado com sucesso." }
         format.json { render :show, status: :created, location: @entry }
       else
         format.html { render :new, status: :unprocessable_content }
@@ -45,7 +45,7 @@ class EntriesController < ApplicationController
   def update
     respond_to do |format|
       if @entry.update(entry_params)
-        format.html { redirect_to @entry, notice: "Entry was successfully updated.", status: :see_other }
+        format.html { redirect_to @entry, notice: "Lançamento atualizado com sucesso.", status: :see_other }
         format.json { render :show, status: :ok, location: @entry }
       else
         format.html { render :edit, status: :unprocessable_content }
@@ -59,7 +59,7 @@ class EntriesController < ApplicationController
     @entry.destroy!
 
     respond_to do |format|
-      format.html { redirect_to entries_path, notice: "Entry was successfully destroyed.", status: :see_other }
+      format.html { redirect_to entries_path(params.permit(:search, :category, :kind, :per_page, :page).to_h), notice: "Lançamento excluído com sucesso.", status: :see_other }
       format.json { head :no_content }
     end
   end

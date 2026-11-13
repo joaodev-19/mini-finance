@@ -29,8 +29,7 @@
       </div>
       <div class="app-notebook-field">
         <%= form.label :amount, "Valor (R$)", class: "form-label" %>
-        <%= form.number_field :amount, step: "0.01", min: "0.01", class: "form-control", placeholder: "0,00", required: true,
-            aria: { describedby: "entry-amount-help" } %>
+        <%= form.number_field :amount, step: "0.01", min: "0.01", inputmode: "decimal", class: "form-control", placeholder: "0,00", required: true %>
       </div>
       <div class="app-notebook-field app-notebook-field-wide">
         <%= form.label :category_id, "Categoria", class: "form-label" %>

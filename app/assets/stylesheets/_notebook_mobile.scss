@@ -1,0 +1,352 @@
+// Native disclosure: the desktop keeps its paper dropdown, phones use document flow.
+.app-notebook-filter-disclosure {
+  position: relative;
+
+  > summary { list-style: none; }
+  > summary::-webkit-details-marker { display: none; }
+  > .app-notebook-filter-menu { inset: 100% 0 auto auto; }
+  &[open] > .app-notebook-filter-menu { display: block; }
+  &[open] > summary::after { transform: rotate(180deg); }
+}
+
+.app-notebook-page-size,
+.app-notebook-page-turn-label { display: none; }
+
+// One mobile/tablet policy, also used by both layout controllers.
+@media (max-width: 991.98px) {
+  html { scrollbar-gutter: auto; }
+
+  .app-paper-desk {
+    height: auto;
+    --mobile-paper-padding: 16px;
+  }
+
+  .app-paper-desk .app-notebook-desk {
+    width: 100%;
+    max-width: 920px;
+    height: auto;
+    padding: 8px 8px max(16px, env(safe-area-inset-bottom));
+  }
+
+  .app-paper-desk .app-notebook-shell {
+    --notebook-tabs-height: 0px;
+    height: auto;
+    margin: 0;
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--note-ink) 6%, transparent);
+  }
+
+  .app-notebook-shell::before,
+  .app-notebook-sheet::before,
+  .app-notebook-sheet::after { display: none; }
+
+  .app-paper-desk .app-notebook-sheet {
+    height: auto;
+    padding: 20px var(--mobile-paper-padding);
+    background: var(--notebook-paper-grain) 0 0 / 96px 96px, var(--note-paper);
+  }
+
+  .app-notebook-tabs {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    padding: 6px 6px 0;
+  }
+
+  .app-notebook-tabs-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .app-notebook-tab {
+    height: 100%;
+    min-height: 48px;
+    padding: 8px 4px;
+    font-size: .875rem;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .app-notebook :is(h1, h2, h3, dd, p) { overflow-wrap: anywhere; }
+  .app-notebook-header > div { min-width: 0; max-width: 100%; }
+  .app-notebook h1 { font-size: 2rem; line-height: 1.15; }
+  .app-notebook .app-notebook-eyebrow { font-size: .75rem; margin-bottom: 8px; }
+  .app-notebook .app-notebook-subtitle { font-size: .875rem; line-height: 1.5; }
+
+  .app-notebook .app-notebook-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .app-notebook-index,
+  .app-notebook-index .app-notebook-paper {
+    height: auto;
+    display: block;
+  }
+
+  .app-notebook-index .app-notebook-header > .app-notebook-button { width: 100%; }
+  .app-notebook-index .app-notebook-section-heading { padding-bottom: 12px; gap: 8px; }
+  .app-notebook-index .app-notebook-section-heading h2 { font-size: 1.25rem; }
+  .app-notebook-section-heading .app-paper-label { color: var(--note-accent); }
+  .app-notebook-section-heading .app-action-content { color: inherit; font-size: inherit; }
+  .app-notebook-index .app-notebook-page-rows {
+    height: auto;
+    overflow: visible;
+    overscroll-behavior: auto;
+  }
+
+  .app-notebook-entries-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .app-notebook-heading-actions { display: contents; }
+  .app-notebook-entry-count { font-size: .8125rem; }
+  .app-notebook-filter-disclosure { grid-column: 1 / -1; width: 100%; }
+  .app-notebook-filter-disclosure > summary { width: fit-content; margin-left: auto; }
+  .app-notebook-filter-disclosure > .app-notebook-filter-menu {
+    position: static;
+    width: 100%;
+    margin-top: 12px;
+    padding: 16px;
+    box-shadow: none;
+  }
+
+  .app-notebook-filter-menu::after { content: none; }
+  .app-notebook-filters :is(.form-control, .form-select),
+  .app-notebook-page-size .form-select { min-height: 48px; font-size: 1rem; }
+  .app-notebook-filters .form-label { font-size: .875rem; }
+  .app-notebook-filter-clear { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; }
+  .app-notebook-filter-actions { flex-wrap: wrap; }
+  .app-notebook-filter-actions .app-notebook-button { min-height: 48px; font-size: .875rem; }
+
+  .app-notebook-index .app-notebook-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+    height: auto;
+    margin: 12px 0;
+    padding: 12px;
+    border: 1px solid var(--note-line);
+    border-radius: 3px;
+    background: var(--note-paper);
+  }
+
+  .app-notebook-row .app-note-entry { display: contents; }
+  .app-notebook-row .app-note-entry-icon { display: none; }
+  .app-notebook-row .app-note-entry-content { grid-column: 1 / -1; }
+  .app-notebook-index :is(.app-note-entry-title, .app-note-entry-category) {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+  }
+
+  .app-notebook-index .app-note-entry-category { font-size: .8125rem; letter-spacing: .03em; }
+  .app-notebook-index .app-note-entry-title { font-size: 1rem; line-height: 1.4; }
+  .app-note-entry-meta { gap: 4px 12px; }
+  .app-note-entry-kind,
+  .app-note-entry-date { font-size: .8125rem; }
+  .app-notebook-index .app-note-entry-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    font-size: .8125rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .app-notebook-index .app-note-entry-amount {
+    max-width: 100%;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    text-align: left;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  .app-notebook-row > .app-notebook-detail { margin: 0; grid-column: 2; }
+
+  .app-notebook-index .app-notebook-category-row {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 12px 0;
+  }
+  .app-notebook-category-row .app-notebook-category { flex-basis: 100%; gap: 12px; }
+  .app-notebook-category-icon { width: 36px; height: 36px; }
+  .app-notebook-category .app-note-entry-category { display: none; }
+  .app-notebook-index .app-notebook-category-actions { gap: 16px; margin-left: auto; flex-wrap: wrap; max-width: 100%; }
+  .app-notebook-category-actions .app-sticker { min-height: 44px; }
+
+  .app-notebook-pagination { grid-template-columns: minmax(0, 1fr); gap: 12px; padding-top: 16px; }
+  .app-notebook-pagination-summary { text-align: center; font-size: .875rem; }
+  .app-notebook-pagination-pages { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-column: 1; grid-row: auto; gap: 8px; }
+  .app-notebook-pagination-number:not(.app-notebook-pagination-number-current) { display: none; }
+  .app-notebook-page { min-width: 44px; min-height: 48px; gap: 6px; }
+  .app-notebook-page-turn { font-size: .875rem; font-style: normal; }
+  .app-notebook-page-turn { width: 100%; }
+  .app-notebook-page-turn-label { display: inline; min-width: 0; font-family: var(--bs-font-sans-serif); overflow-wrap: anywhere; }
+  .app-notebook-page-caption { justify-self: center; font-size: .875rem; }
+  .app-notebook-page-size {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 8px;
+    font-size: .875rem;
+  }
+  .app-notebook-page-size > * { min-width: 0; max-width: 100%; }
+  .app-notebook-page-size > span { display: flex; align-items: center; min-height: 48px; }
+  .app-notebook-page-size-picker { position: relative; flex: 0 1 6rem; width: 6rem; min-width: 0; max-width: 100%; }
+  .app-notebook-page-size-picker[open] { z-index: var(--bs-dropdown-zindex, 1000); }
+  .app-notebook-page-size-picker > summary { display: flex; align-items: center; width: 100%; list-style: none; cursor: pointer; }
+  .app-notebook-page-size-picker > summary::-webkit-details-marker { display: none; }
+  .app-notebook-page-size-options { position: absolute; inset-inline: 0; bottom: calc(100% + 8px); min-width: 0; margin: 0; padding: 4px; border: 1px solid var(--note-line); border-radius: 3px; background: var(--note-paper); box-shadow: 0 5px 15px color-mix(in srgb, var(--note-ink) 10%, transparent); scroll-margin-block: 16px; }
+  .app-notebook-page-size-options label { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px; color: var(--note-ink); cursor: pointer; }
+  .app-notebook-page-size-options label:has(input:checked) { background: var(--note-soft); color: var(--note-accent); }
+  .app-notebook-page-size-options input { flex: none; margin: 0; accent-color: var(--note-accent); }
+  .app-notebook-page-size input[type="submit"] { min-height: 48px; border: 1px solid var(--note-line); border-radius: 3px; background: var(--note-soft); margin: 0; padding: 8px; font-size: .875rem; }
+
+  .app-notebook-fields { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .app-notebook-form-heading { margin-bottom: 24px; }
+  .app-notebook-field :is(.form-control, .form-select) { width: 100%; min-height: 48px; font-size: 1rem; }
+  .app-notebook-field textarea.form-control { min-height: 128px; }
+  .app-notebook-field :is(.form-control, .form-select):focus { scroll-margin-block: 24px; }
+  .app-notebook-field-help { font-size: .875rem; }
+  .app-notebook-form-hint { display: none; }
+  .app-notebook-form-buttons { display: flex; flex-direction: column; width: 100%; align-items: stretch; }
+  .app-notebook-form-buttons > * { width: 100%; margin: 0; }
+  .app-notebook-form-actions { align-items: stretch; gap: 16px; margin-top: 24px; padding-top: 16px; }
+  .app-notebook-form-actions > .app-notebook-button { width: 100%; }
+  .app-action-content { max-width: 100%; overflow-wrap: anywhere; }
+  .app-notebook-entry-action-buttons { flex-basis: 100%; gap: 16px; }
+  .app-notebook-entry-action-buttons > * { flex: 1; }
+  .app-notebook-entry-action-buttons .app-notebook-delete { width: 100%; }
+  .app-notebook-details { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .app-notebook-details .app-notebook-detail-amount { grid-row: 1; }
+  .app-notebook-details .app-note-entry-amount { font-size: 1.75rem; overflow-wrap: anywhere; }
+
+  .modal.app-delete-modal-stationery {
+    .modal-dialog { margin: 16px 12px; min-height: calc(100% - 32px); }
+    .modal-content { max-height: calc(100dvh - 64px); margin-block: 16px; background: var(--note-paper); }
+    .modal-header { padding: 20px 64px 12px 20px; }
+    .modal-body { padding: 12px 20px; overflow-y: auto; min-height: 0; }
+    .modal-title { font-size: 1.5rem; }
+    .modal-footer { padding: 16px 20px; gap: 16px; }
+    .modal-footer > * { flex: 1 1 100%; }
+    .modal-footer .app-notebook-eraser { width: 100%; transform: none; min-height: 48px; }
+    .modal-footer .app-notebook-paper-cancel { transform: none; }
+    .app-notebook-tape-close { inset: 8px 8px auto auto; width: 44px; height: 44px; transform: none; }
+    .modal-content::before,
+    .modal-content::after,
+    .modal-footer::after { display: none; }
+  }
+
+  .app-paper-desk .app-dashboard,
+  .app-paper-desk .app-dashboard-content,
+  .app-paper-desk .app-dashboard-distribution { height: auto; min-height: 0; }
+  .app-dashboard-content { flex: none; }
+  .app-dashboard .app-dashboard-balance {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 24px;
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .app-dashboard .app-dashboard-balance .app-dashboard-summary,
+  .app-dashboard .app-dashboard-balance .app-dashboard-comparison { display: block; }
+  .app-dashboard .app-dashboard-balance .app-dashboard-summary > .app-dashboard-section-heading {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 12px;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+  .app-dashboard .app-dashboard-balance .app-dashboard-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .app-dashboard .app-dashboard-balance .app-dashboard-slip { min-height: 0; height: auto; padding: 12px; }
+  .app-dashboard-slip--balance { grid-column: 1 / -1; }
+  .app-dashboard .app-dashboard-amount { font-size: clamp(1.125rem, 3.6vw, 1.75rem); margin-block: 12px; letter-spacing: -.035em; overflow-wrap: anywhere; }
+  .app-dashboard .app-dashboard-slip--balance .app-dashboard-amount { font-size: 1.75rem; }
+  .app-dashboard .app-dashboard-slip-footer { font-size: .8125rem; line-height: 1.5; }
+  .app-dashboard .app-dashboard-balance-label { font-size: .6875rem; }
+  .app-dashboard .app-dashboard-slip-heading h3 { font-size: .875rem; }
+  .app-dashboard .app-dashboard-header { gap: 16px; margin-bottom: 24px; }
+  .app-dashboard .app-dashboard-intro h1 { font-size: 2rem; }
+  .app-dashboard .app-notebook-eyebrow { display: none; }
+  .app-dashboard .app-notebook-subtitle { display: block; font-size: .875rem; }
+  .app-dashboard .app-dashboard-calendar { justify-self: stretch; width: 100%; padding: 4px; grid-template-columns: 48px minmax(0, 1fr) 48px; box-shadow: none; }
+  .app-dashboard-calendar::before,
+  .app-dashboard-calendar::after { display: none; }
+  .app-dashboard .app-dashboard-month { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; min-width: 0; gap: 8px; padding: 4px; }
+  .app-dashboard .app-dashboard-month-label { display: none; }
+  .app-dashboard .app-dashboard-month-name { font-size: 1.25rem; }
+  .app-dashboard .app-dashboard-month-year { font-size: .875rem; letter-spacing: .05em; }
+  .app-dashboard .app-dashboard-month-turn { min-width: 48px; min-height: 48px; }
+  .app-dashboard .app-dashboard-section-heading { gap: 8px; margin-bottom: 12px; }
+  .app-dashboard .app-dashboard-section-heading h2 { font-size: 1.25rem; }
+  .app-dashboard .app-dashboard-consumption,
+  .app-dashboard .app-dashboard-comparison { padding-top: 16px; border-top: 1px solid var(--dashboard-rule); }
+  .app-dashboard-consumption-usage { padding: 16px; row-gap: 12px; }
+  .app-dashboard-consumption-readout { justify-self: start; gap: 12px; }
+  .app-dashboard-consumption-note { font-size: .875rem; }
+  .app-dashboard-consumption-empty { font-size: .875rem; }
+  .app-dashboard-consumption-empty > span { display: block; }
+  .app-dashboard .app-dashboard-comparison-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .app-dashboard .app-dashboard-comparison-item + .app-dashboard-comparison-item { padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--note-line); }
+  .app-dashboard .app-dashboard-comparison-heading h3,
+  .app-dashboard .app-dashboard-trend,
+  .app-dashboard .app-dashboard-comparison-reference { font-size: .875rem; }
+  .app-dashboard .app-dashboard-comparison-values { margin-top: 8px; }
+  .app-dashboard .app-dashboard-difference { font-size: 1.5rem; overflow-wrap: anywhere; }
+  .app-dashboard .app-dashboard-content-navigation { display: none; }
+  .app-dashboard .app-dashboard-category-list { display: block; height: auto; overflow: visible; scroll-snap-type: none; }
+  .app-dashboard-category-list::after { display: none; }
+  .app-dashboard .app-dashboard-category { padding-block: 16px; }
+  .app-dashboard .app-dashboard-category-heading { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 6px 8px; align-items: baseline; }
+  .app-dashboard-category-heading h3 { grid-column: 2 / -1; font-size: 1rem; line-height: 1.4; }
+  .app-dashboard .app-dashboard-category-amount { grid-column: 2; margin: 0; font-size: 1.25rem; overflow-wrap: anywhere; }
+  .app-dashboard .app-dashboard-leading-label { grid-column: 3; grid-row: 2; margin: 0; font-size: .75rem; }
+  .app-dashboard-category-percentage { font-size: .875rem; }
+  .app-dashboard .app-dashboard-distribution-unit { display: none; }
+  .app-dashboard .app-dashboard-section-caption { display: block; font-size: .875rem; }
+  .app-dashboard-distribution:has(.app-dashboard-empty) > .app-dashboard-section-heading { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+  .app-dashboard .app-dashboard-empty { padding: 24px 0; }
+  .app-dashboard .app-dashboard-folio { width: auto; margin-top: 24px; padding-top: 12px; }
+  .app-dashboard .app-dashboard-folio-heading { position: static; width: auto; height: auto; overflow: visible; clip-path: none; font-size: .8125rem; }
+  .app-dashboard .app-dashboard-folio-leaves { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .app-dashboard .app-dashboard-folio-leaf { min-height: 64px; padding: 8px 4px; gap: 8px; }
+  .app-dashboard .app-dashboard-folio-title { font-size: 1rem; line-height: 1.35; }
+  .app-dashboard .app-dashboard-folio-description,
+  .app-dashboard .app-dashboard-folio-turn { display: none; }
+  .app-dashboard .app-dashboard-folio-ribbon { flex-basis: 24px; font-size: 1.3rem; }
+
+  .app-notebook :is(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid var(--note-accent); outline-offset: 3px; }
+}
+
+@media (max-width: 359.98px) {
+  .app-paper-desk { --mobile-paper-padding: 12px; }
+  .app-notebook-entry-count { padding-inline: 4px; }
+  .app-notebook-index .app-note-entry-amount { grid-column: 1 / -1; }
+  .app-notebook-row > .app-notebook-detail { grid-row: auto; }
+  .app-dashboard .app-dashboard-balance .app-dashboard-summary-grid { grid-template-columns: minmax(0, 1fr); }
+  .app-dashboard .app-dashboard-amount { font-size: 1.5rem; }
+  .app-dashboard .app-dashboard-leading-label { grid-column: 2 / -1; grid-row: auto; justify-self: start; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .app-notebook :is(.app-sticker, .app-paper-action, .app-back-marker):active { opacity: .8; }
+}

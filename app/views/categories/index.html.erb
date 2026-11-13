@@ -44,7 +44,8 @@
                 data-bs-toggle="modal" 
                 data-bs-target="#deleteCategoryModal"
                 data-category-name="<%= category.name %>"
-                data-delete-url="<%= category_path(category) %>"
+                data-delete-url="<%= category_path(category, notebook_context_params) %>"
+                aria-label="Excluir categoria <%= category.name %>"
                 >
                   <span class="app-action-content"><span class="app-paper-cross" aria-hidden="true">×</span> Excluir</span>
               </button>
@@ -62,30 +63,6 @@
     <%= render "shared/notebook_pagination", pagination: @pagination, label: "categorias" %>
   </section>
 </main>
-
-<script>
-  document.addEventListener("show.bs.modal", (e) => {
-    const modal = e.target;
-
-    if (modal.id !== "deleteCategoryModal") return;
-
-    const trigger = e.relatedTarget;
-    if (!trigger) return;
-
-    const name = trigger.dataset.categoryName;
-    const deleteUrl = trigger.dataset.deleteUrl;
-
-    const form = modal.querySelector("#delete-category-form");
-    const confirmButton = form?.querySelector(".app-notebook-delete");
-    const nameElement = modal.querySelector("[data-delete-name]");
-
-    if (!form || !confirmButton || !nameElement || !deleteUrl) return;
-
-    nameElement.textContent = name;
-    form.action = deleteUrl;
-    confirmButton.disabled = false;
-  });
-</script>
 
 <%= render "shared/delete_modal",
     modal_id: "deleteCategoryModal",

@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to categories_path, notice: "Category was successfully created." }
+        format.html { redirect_to categories_path, notice: "Categoria criada com sucesso." }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_content }
@@ -42,7 +42,7 @@ class CategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @category.update(category_params)
-        format.html { redirect_to @category, notice: "Category was successfully updated.", status: :see_other }
+        format.html { redirect_to @category, notice: "Categoria atualizada com sucesso.", status: :see_other }
         format.json { render :show, status: :ok, location: @category }
       else
         format.html { render :edit, status: :unprocessable_content }
@@ -54,11 +54,11 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1 or /categories/1.json
   def destroy
     if @category.destroy
-      redirect_to categories_path,
+      redirect_to categories_path(params.permit(:per_page, :page).to_h),
         notice: "Categoria excluída com sucesso.",
         status: :see_other
     else
-      redirect_to categories_path,
+      redirect_to categories_path(params.permit(:per_page, :page).to_h),
         alert: "Não é possível excluir uma categoria com lançamentos vinculados.",
         status: :see_other
     end

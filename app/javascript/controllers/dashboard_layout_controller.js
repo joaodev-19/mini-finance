@@ -7,21 +7,41 @@ export default class extends Controller {
   connect() {
     this.page = 0
     this.pages = 1
+    this.mobile = window.matchMedia("(max-width: 991.98px)")
     this.observer = new ResizeObserver(() => {
       cancelAnimationFrame(this.frame)
       this.frame = requestAnimationFrame(() => this.layout())
     })
-    this.observer.observe(this.contentTarget)
+    this.onBreakpointChange = () => {
+      this.observer.disconnect()
+      if (!this.mobile.matches) this.observer.observe(this.contentTarget)
+      this.layout()
+    }
+    this.mobile.addEventListener("change", this.onBreakpointChange)
+    this.onBreakpointChange()
     this.onFontsReady = () => { if (this.element.isConnected) this.layout() }
     document.fonts.ready.then(this.onFontsReady)
   }
 
   disconnect() {
     this.observer.disconnect()
+    this.mobile.removeEventListener("change", this.onBreakpointChange)
     cancelAnimationFrame(this.frame)
   }
 
   layout() {
+    this.naturalFlow = this.mobile.matches
+    if (this.naturalFlow) {
+      if (this.hasViewportTarget) {
+        this.viewportTarget.dataset.layout = "spread"
+        this.viewportTarget.removeAttribute("tabindex")
+      }
+      this.page = 0
+      this.pages = 1
+      this.updatePosition()
+      return
+    }
+
     if (!this.hasViewportTarget) {
       this.pages = 1
       this.updatePosition()
@@ -29,6 +49,7 @@ export default class extends Controller {
     }
 
     const viewport = this.viewportTarget
+    viewport.setAttribute("tabindex", "0")
     if (viewport.dataset.categoryPages) {
       this.layoutCategories()
     } else {
@@ -41,8 +62,7 @@ export default class extends Controller {
       const gap = parseFloat(getComputedStyle(viewport).rowGap) || 0
       const needed = summary.offsetHeight + consumption.offsetHeight + comparison.offsetHeight + gap * 2
       let panels = [viewport]
-      const naturalFlow = window.matchMedia("(max-width: 767.98px)").matches
-      if (naturalFlow || needed <= viewport.clientHeight) {
+      if (needed <= viewport.clientHeight) {
         this.labels = ["Resumo e comparação"]
       } else {
         viewport.dataset.layout = "chapters"
@@ -92,6 +112,12 @@ export default class extends Controller {
   }
 
   updatePosition() {
+    if (this.naturalFlow) {
+      this.controlsTarget.hidden = true
+      this.previousTarget.disabled = true
+      this.nextTarget.disabled = true
+      return
+    }
     if (this.hasViewportTarget) {
       const gap = parseFloat(getComputedStyle(this.viewportTarget).columnGap) || 0
       this.step = this.viewportTarget.clientWidth + gap
@@ -121,18 +147,21 @@ export default class extends Controller {
   next() { this.goToPage(this.page + 1) }
 
   goToPage(page) {
+    if (this.naturalFlow || !this.hasViewportTarget) return
     this.page = Math.max(0, Math.min(this.pages - 1, page))
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     this.scrollToPage(reducedMotion ? "instant" : "smooth")
   }
 
   scrollToPage(behavior) {
+    if (this.naturalFlow || !this.hasViewportTarget) return
     const gap = parseFloat(getComputedStyle(this.viewportTarget).columnGap) || 0
     this.step = this.viewportTarget.clientWidth + gap
     this.viewportTarget.scrollTo({ left: this.page * this.step, behavior })
   }
 
   navigateWithKeyboard(event) {
+    if (this.naturalFlow) return
     if (event.target !== this.viewportTarget || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return
     event.preventDefault()
     if (event.key === "Home") this.goToPage(0)

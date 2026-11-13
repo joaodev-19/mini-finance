@@ -30,8 +30,8 @@ class NotebookNavigationTest < ActionDispatch::IntegrationTest
       assert_select "a[aria-current='page'][href='#{active_path}']"
       assert_select "a[href='#{entries_path}']", text: "Lançamentos"
       assert_select "a[href='#{categories_path}']", text: "Categorias"
-      assert_select "span[aria-disabled='true']", text: /Dashboard.*Em breve/m
-      assert_select "a", count: 2
+      assert_select "a[href='#{dashboard_index_path}']", text: "Painel de Controle"
+      assert_select "a", count: 3
     end
   end
 end

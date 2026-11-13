@@ -5,7 +5,7 @@ class NotebookPaginationTest < ActiveSupport::TestCase
     [ nil, "abc", "0", "-2", [ "2" ], { page: "2" } ].each do |value|
       pagination = NotebookPagination.new(total_count: 30, page: value, per_page: value)
       assert_equal 1, pagination.page
-      assert_equal 5, pagination.per_page
+      assert_equal 10, pagination.per_page
     end
 
     pagination = NotebookPagination.new(total_count: 31, page: "999", per_page: "999")
@@ -25,7 +25,7 @@ class NotebookPaginationTest < ActiveSupport::TestCase
   end
 
   test "large collections use a compact window with first and last pages" do
-    pagination = NotebookPagination.new(total_count: 1000, page: "100")
+    pagination = NotebookPagination.new(total_count: 2000, page: "100")
     assert_equal [ 1, nil, 99, 100, 101, nil, 200 ], pagination.page_numbers
   end
 end

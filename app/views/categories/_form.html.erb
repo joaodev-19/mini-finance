@@ -14,10 +14,10 @@
   <div class="app-notebook-fields">
     <div class="app-notebook-field app-notebook-field-wide">
       <%= form.label :name, "Nome da categoria", class: "form-label" %>
-      <%= form.text_field :name, class: "form-control", placeholder: "Ex.: Alimentação",
+      <%= form.text_field :name, class: "form-control", placeholder: "Ex.: Alimentação", required: true,
           aria: { describedby: "category-name-help" } %>
       <p id="category-name-help" class="app-notebook-field-help">
-        <%= category.persisted? ? "Ajuste o nome do lançamento para mantê-lo fácil de reconhecer." : "Escolha um nome fácil de reconhecer ao registrar um lançamento." %> 
+        <%= category.persisted? ? "Ajuste o nome da categoria para mantê-lo fácil de reconhecer." : "Escolha um nome fácil de reconhecer ao registrar um lançamento." %>
       </p>
     </div>
   </div>

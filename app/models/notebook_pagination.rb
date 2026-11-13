@@ -1,5 +1,5 @@
 class NotebookPagination
-  DEFAULT_PER_PAGE = 5
+  DEFAULT_PER_PAGE = 10
   MAX_PER_PAGE = 20
 
   attr_reader :page, :per_page, :total_count

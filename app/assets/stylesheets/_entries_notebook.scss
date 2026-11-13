@@ -367,14 +367,16 @@ html {
   font-size: .75rem;
 }
 
-.app-notebook-filters :is(.form-control, .form-select) {
+.app-notebook-filters :is(.form-control, .form-select),
+.app-notebook-page-size .form-select {
   border-color: var(--note-line);
   background-color: var(--note-paper);
   color: var(--note-ink);
   font-size: .8rem;
 }
 
-.app-notebook-filters :is(.form-control, .form-select):focus {
+.app-notebook-filters :is(.form-control, .form-select):focus,
+.app-notebook-page-size .form-select:focus {
   border-color: var(--note-accent);
   box-shadow: 0 0 0 3px #4d60431a;
 }

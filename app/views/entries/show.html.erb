@@ -11,11 +11,11 @@
     </header>
 
     <dl class="app-notebook-details">
-      <div>
+      <div class="app-notebook-detail-kind">
         <dt>Tipo do lançamento</dt>
         <dd><%= entry_kind_label(@entry) %></dd>
       </div>
-      <div>
+      <div class="app-notebook-detail-amount">
         <dt>Valor</dt>
         <dd class="app-note-entry-amount <%= entry_amount_class(@entry) %>">
           <%= "+" if @entry.income? %><%= "-" if @entry.expense? %>
@@ -43,7 +43,7 @@
     </dl>
 
     <div class="app-notebook-form-actions app-notebook-entry-actions">
-      <%= link_to entries_path, class: "app-notebook-detail app-back-marker" do %>
+      <%= link_to entries_path(notebook_context_params), class: "app-notebook-detail app-back-marker" do %>
         <span class="app-action-content"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar aos lançamentos</span>
       <% end %>
       <div class="app-notebook-entry-action-buttons">
@@ -53,7 +53,7 @@
             data-bs-toggle="modal"
             data-bs-target="#deleteEntryModal"
             data-category-name="<%= @entry.title %>"
-            data-delete-url="<%= entries_path(@entry) %>"
+            data-delete-url="<%= entry_path(@entry, notebook_context_params) %>"
             >
               <span class="app-action-content"><span class="app-paper-cross" aria-hidden="true">×</span> Excluir</span>
           </button>

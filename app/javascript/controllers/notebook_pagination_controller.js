@@ -7,20 +7,30 @@ export default class extends Controller {
   static values = { perPage: Number, page: Number }
 
   connect() {
+    this.mobile = window.matchMedia("(max-width: 991.98px)")
+    this.onBreakpointChange = () => this.observeDesktop()
     this.observer = new ResizeObserver(() => {
       clearTimeout(this.resizeTimer)
       this.resizeTimer = setTimeout(() => this.fitPage(), 150)
     })
-    this.observer.observe(this.rowsTarget)
+    this.mobile.addEventListener("change", this.onBreakpointChange)
+    this.observeDesktop()
   }
 
   disconnect() {
     this.observer.disconnect()
+    this.mobile.removeEventListener("change", this.onBreakpointChange)
     clearTimeout(this.resizeTimer)
   }
 
+  observeDesktop() {
+    clearTimeout(this.resizeTimer)
+    this.observer.disconnect()
+    if (!this.mobile.matches) this.observer.observe(this.rowsTarget)
+  }
+
   fitPage() {
-    if (window.matchMedia("(max-height: 539px)").matches) return
+    if (this.mobile.matches || window.matchMedia("(max-height: 539px)").matches) return
 
     const rowHeight = parseFloat(getComputedStyle(this.rowsTarget).getPropertyValue("--notebook-row-height"))
     if (!rowHeight || !this.rowsTarget.clientHeight) return

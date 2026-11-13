@@ -9,6 +9,7 @@
 <% removed = feminine ? "removida" : "removido" %>
 
 <div class="modal fade app-delete-modal-stationery"
+     data-controller="delete-confirmation" data-action="show.bs.modal->delete-confirmation#prepare"
      tabindex="-1"
      id="<%= modal_id %>"
      aria-labelledby="<%= modal_id %>-title"
@@ -53,7 +54,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary app-notebook-paper-cancel" data-bs-dismiss="modal">Cancelar</button>
 
-        <%= button_to (record || "#"),
+        <%= button_to (record ? polymorphic_path(record, notebook_context_params) : "#"),
             method: :delete,
             form: { id: form_id },
             class: "app-notebook-delete app-notebook-eraser",

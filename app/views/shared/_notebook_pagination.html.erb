@@ -2,14 +2,37 @@
   <p class="app-notebook-pagination-summary" role="status">
     <%= pagination.first_item %>–<%= pagination.last_item %> de <%= pagination.total_count %> <%= label %>
   </p>
+  <%= form_with url: request.path, method: :get, class: "app-notebook-page-size" do |form| %>
+    <% notebook_context_params.except("page", "per_page").each do |key, value| %>
+      <%= hidden_field_tag key, value, id: nil %>
+    <% end %>
+    <span id="notebook-page-size-label">Por página</span>
+    <details class="app-notebook-page-size-picker" data-controller="filter-panel page-size"
+             data-action="toggle->page-size#reveal keydown.esc->filter-panel#close click@window->filter-panel#dismiss">
+      <summary class="form-select" aria-labelledby="notebook-page-size-label notebook-page-size-current">
+        <span id="notebook-page-size-current" data-page-size-target="value"><%= pagination.per_page %></span>
+      </summary>
+      <fieldset class="app-notebook-page-size-options" data-action="change->page-size#choose">
+        <legend class="visually-hidden">Quantidade de registros por página</legend>
+        <% [10, 20, pagination.per_page].uniq.sort.each do |size| %>
+          <label for="notebook-page-size-<%= size %>">
+            <%= form.radio_button :per_page, size, checked: size == pagination.per_page, id: "notebook-page-size-#{size}" %>
+            <span><%= size %></span>
+          </label>
+        <% end %>
+      </fieldset>
+    </details>
+    <%= form.submit "Atualizar", class: "app-notebook-detail" %>
+  <% end %>
   <ol class="app-notebook-pagination-pages">
     <li>
       <% if pagination.page > 1 %>
         <%= link_to notebook_page_path(pagination, pagination.page - 1), class: "app-notebook-page app-notebook-page-turn", rel: "prev", aria: { label: "Página anterior" } do %>
           <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          <span class="app-notebook-page-turn-label">Anterior</span>
         <% end %>
       <% else %>
-        <span class="app-notebook-page app-notebook-page-turn" aria-disabled="true" aria-label="Página anterior"><i class="bi bi-arrow-left" aria-hidden="true"></i></span>
+        <span class="app-notebook-page app-notebook-page-turn" aria-disabled="true" aria-label="Página anterior"><i class="bi bi-arrow-left" aria-hidden="true"></i><span class="app-notebook-page-turn-label">Anterior</span></span>
       <% end %>
     </li>
     <% pagination.page_numbers.each do |number| %>
@@ -27,9 +50,10 @@
       <% if pagination.page < pagination.total_pages %>
         <%= link_to notebook_page_path(pagination, pagination.page + 1), class: "app-notebook-page app-notebook-page-turn", rel: "next", aria: { label: "Próxima página" } do %>
           <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          <span class="app-notebook-page-turn-label">Próxima</span>
         <% end %>
       <% else %>
-        <span class="app-notebook-page app-notebook-page-turn" aria-disabled="true" aria-label="Próxima página"><i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+        <span class="app-notebook-page app-notebook-page-turn" aria-disabled="true" aria-label="Próxima página"><i class="bi bi-arrow-right" aria-hidden="true"></i><span class="app-notebook-page-turn-label">Próxima</span></span>
       <% end %>
     </li>
   </ol>
