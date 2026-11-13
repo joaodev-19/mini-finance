@@ -1,7 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/categories.yml
 
 one:
-  name: MyString
+  name: Alimentação
+  user: one
 
 two:
-  name: MyString
+  name: Transporte
+  user: one

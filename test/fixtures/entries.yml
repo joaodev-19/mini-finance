@@ -1,15 +1,19 @@
+# test/fixtures/entries.yml
+
 one:
-  title: MyString
+  title: Salário
   amount: 9.99
   occurred_on: 2026-11-10
   description: MyText
   category: one
+  user: one
   kind: income
 
 two:
-  title: MyString
+  title: Transporte
   amount: 9.99
   occurred_on: 2026-11-10
   description: MyText
   category: two
+  user: one
   kind: expense
