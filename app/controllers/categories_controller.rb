@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.order(:name, :id)
+    @categories = Current.user.categories.order(:name, :id)
     @categories = paginate_notebook(@categories) if request.format.html?
   end
 
@@ -16,7 +16,7 @@ class CategoriesController < ApplicationController
 
   # GET /categories/new
   def new
-    @category = Category.new
+    @category = Current.user.categories.new
   end
 
   # GET /categories/1/edit
@@ -25,7 +25,7 @@ class CategoriesController < ApplicationController
 
   # POST /categories or /categories.json
   def create
-    @category = Category.new(category_params)
+    @category = Current.user.categories.new(category_params)
 
     respond_to do |format|
       if @category.save
@@ -68,12 +68,12 @@ class CategoriesController < ApplicationController
     def remember_entry_form
       return unless params[:from_entry] == "1"
 
-      session[:category_return_entry_id] = Entry.find_by(id: params[:entry_id])&.id
+      session[:category_return_entry_id] = Current.user.entries.find_by(id: params[:entry_id])&.id
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_category
-      @category = Category.find(params.expect(:id))
+      @category = Current.user.categories.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

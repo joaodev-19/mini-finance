@@ -14,8 +14,8 @@ class DashboardController < ApplicationController
 
     @selected_month = date
 
-    current_month_entries = Entry.where(occurred_on: date.all_month)
-    previous_month_entries = Entry.where(occurred_on: date.prev_month.all_month)
+    current_month_entries = Current.user.entries.where(occurred_on: date.all_month)
+    previous_month_entries = Current.user.entries.where(occurred_on: date.prev_month.all_month)
 
     @income_entries = current_month_entries.income
     @expense_entries = current_month_entries.expense

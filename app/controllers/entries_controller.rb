@@ -3,6 +3,7 @@ class EntriesController < ApplicationController
 
   before_action :set_entry, only: %i[ show edit update destroy ]
   before_action :set_categories, only: %i[index new edit create update]
+  validate :category_belongs_to_user
 
   # GET /entries or /entries.json
   def index
@@ -22,7 +23,7 @@ class EntriesController < ApplicationController
 
   # GET /entries/new
   def new
-    @entry = Entry.new
+    @entry = Current.user.entries.new
   end
 
   # GET /entries/1/edit
@@ -31,7 +32,7 @@ class EntriesController < ApplicationController
 
   # POST /entries or /entries.json
   def create
-    @entry = Entry.new(entry_params)
+    @entry = Current.user.entries.new(entry_params)
 
     respond_to do |format|
       if @entry.save
@@ -79,6 +80,14 @@ class EntriesController < ApplicationController
     end
 
     def set_categories
-      @categories = Category.order(:name)
+      @categories = Current.user.categories.order(:name)
+    end
+
+    def category_belongs_to_user
+      return if category.nil? || user.nil?
+
+      if category.user_id != user_id
+        errors.add(:category, "não pertence a este usuário")
+      end
     end
 end
