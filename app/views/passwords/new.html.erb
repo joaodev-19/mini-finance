@@ -1,8 +1,34 @@
-<h1>Forgot your password?</h1>
+<% content_for :title, "Recuperar senha | Mini Finance" %>
+<% content_for :body_class, "app-auth-desk" %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<main class="app-notebook app-notebook-auth" aria-labelledby="password-recovery-title">
+  <div class="app-auth-content">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow app-paper-label"><i class="bi bi-key" aria-hidden="true"></i> Mini Finance / recuperar acesso</p>
+      <h1 id="password-recovery-title">Volte ao seu caderno<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">Informe o e-mail da sua conta para receber as instruções de recuperação.</p>
+    </header>
 
-<%= form_with url: passwords_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.submit "Email reset instructions" %>
-<% end %>
+    <%= render "shared/auth_feedback" %>
+
+    <%= form_with url: passwords_path, class: "app-notebook-form app-auth-form" do |form| %>
+      <div class="app-notebook-field">
+        <%= form.label :email_address, "E-mail", class: "form-label" %>
+        <%= form.email_field :email_address, class: "form-control", required: true, autofocus: true,
+            autocomplete: "username", placeholder: "seu@email.com", value: params[:email_address] %>
+      </div>
+      <div class="app-notebook-form-actions app-auth-actions">
+        <%= form.button type: "submit", class: "app-notebook-button app-save-stamp app-save-stamp--record",
+            data: { turbo_submits_with: "Enviando…" } do %>
+          <span class="app-save-seal" aria-hidden="true"><i class="bi bi-envelope"></i></span> Enviar instruções
+        <% end %>
+      </div>
+    <% end %>
+
+    <footer class="app-auth-footer">
+      <%= link_to new_session_path, class: "app-auth-link" do %>
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para entrar
+      <% end %>
+    </footer>
+  </div>
+</main>

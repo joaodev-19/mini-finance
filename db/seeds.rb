@@ -1,17 +1,3 @@
-categories = [
-  "Alimentação",
-  "Transporte",
-  "Moradia",
-  "Saúde",
-  "Educação",
-  "Lazer",
-  "Compras",
-  "Trabalho",
-  "Rendimentos"
-]
+User.find_each(&:ensure_default_categories!)
 
-categories.each do |name|
-  user.categories.find_or_create_by!(name: name)
-end
-
-puts "Categorias preparadas: #{Category.count}"
+puts "Categorias-base preparadas para #{User.count} usuário(s)."

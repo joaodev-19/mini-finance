@@ -25,14 +25,14 @@
       <div class="app-notebook-heading-actions">
         <span class="app-notebook-entry-count app-paper-label"><%= pluralize(@pagination.total_count, "lançamento", plural: "lançamentos") %></span>
         <details class="app-notebook-filter-disclosure" data-controller="filter-panel"
-                 data-action="keydown.esc->filter-panel#close click@window->filter-panel#dismiss">
+                 data-action="toggle->filter-panel#fit resize@window->filter-panel#fit keydown.esc->filter-panel#close click@window->filter-panel#dismiss">
           <% active_filter_count = [params[:search], params[:category], params[:kind]].count(&:present?) %>
           <summary id="entry-filters-toggle" class="app-notebook-filter-toggle app-paper-action app-paper-action--filter"
                    aria-controls="entry-filters-menu">
             <span class="app-action-content"><i class="bi bi-sliders" aria-hidden="true"></i>
               Filtros<%= " (#{active_filter_count})" if active_filter_count.positive? %></span>
           </summary>
-          <div id="entry-filters-menu" class="dropdown-menu dropdown-menu-end app-notebook-filter-menu app-paper-note" aria-labelledby="entry-filters-toggle">
+          <div id="entry-filters-menu" class="app-notebook-filter-menu app-paper-note" aria-labelledby="entry-filters-toggle">
             <%= form_with url: entries_path, method: :get, class: "app-notebook-filters" do |form| %>
               <%= form.hidden_field :per_page, value: @pagination.per_page, id: nil %>
               <div class="app-notebook-filter-field">

@@ -1,10 +1,24 @@
-<nav class="app-notebook-tabs" aria-label="Seções do caderno">
+<% signed_in = authenticated? %>
+<nav class="app-notebook-tabs <%= signed_in ? 'app-notebook-tabs--account' : 'app-notebook-tabs--access' %>" aria-label="<%= signed_in ? 'Seções do caderno' : 'Acesso ao caderno' %>">
+  <% if signed_in %>
+    <%= button_to session_path, method: :delete,
+        class: "app-notebook-detail app-back-marker app-notebook-signout",
+        form: { class: "app-notebook-account" } do %>
+      <span class="app-action-content"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair</span>
+    <% end %>
+  <% end %>
   <ul class="app-notebook-tabs-list">
-    <% [["Lançamentos", entries_path, "entries"], ["Categorias", categories_path, "categories"], ["Painel de Controle", dashboard_index_path, "dashboard"]].each do |label, path, section| %>
+    <% tabs = if signed_in
+      [["Lançamentos", entries_path, "entries"], ["Categorias", categories_path, "categories"], ["Painel de Controle", dashboard_index_path, "dashboard"]]
+    else
+      [["Entrar", new_session_path, "sessions"], ["Criar conta", new_registration_path, "registrations"]]
+    end %>
+    <% tabs.each do |label, path, section| %>
+      <% current = controller_name == section || (section == "sessions" && controller_name == "passwords") %>
       <li>
         <%= link_to label, path,
-            class: "app-notebook-tab app-notebook-tab-#{section}#{' app-notebook-tab-active' if controller_name == section}",
-            aria: { current: ("page" if controller_name == section) } %>
+            class: "app-notebook-tab app-notebook-tab-#{section}#{' app-notebook-tab-active' if current}",
+            aria: { current: ("page" if current) } %>
       </li>
     <% end %>
   </ul>

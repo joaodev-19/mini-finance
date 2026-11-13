@@ -1,0 +1,6 @@
+<% if flash[:alert].present? %>
+  <div class="app-notebook-errors" role="alert"><%= flash[:alert] %></div>
+<% end %>
+<% if flash[:notice].present? %>
+  <div class="app-notebook-notice" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i><%= flash[:notice] %></div>
+<% end %>

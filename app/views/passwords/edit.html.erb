@@ -1,9 +1,39 @@
-<h1>Update your password</h1>
+<% content_for :title, "Nova senha | Mini Finance" %>
+<% content_for :body_class, "app-auth-desk" %>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<main class="app-notebook app-notebook-auth" aria-labelledby="password-update-title">
+  <div class="app-auth-content">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow app-paper-label"><i class="bi bi-key" aria-hidden="true"></i> Mini Finance / renovar acesso</p>
+      <h1 id="password-update-title">Uma nova chave<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">Escolha uma nova senha para continuar suas anotações.</p>
+    </header>
 
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
-<% end %>
+    <%= render "shared/auth_feedback" %>
+
+    <%= form_with url: password_path(params[:token]), method: :put, class: "app-notebook-form app-auth-form" do |form| %>
+      <div class="app-notebook-fields">
+        <div class="app-notebook-field app-notebook-field-wide">
+          <%= form.label :password, "Nova senha", class: "form-label" %>
+          <%= form.password_field :password, class: "form-control", required: true, autocomplete: "new-password",
+              minlength: 8, maxlength: 72, aria: { describedby: "password-update-help" } %>
+          <p id="password-update-help" class="app-notebook-field-help">Use pelo menos 8 caracteres.</p>
+        </div>
+        <div class="app-notebook-field app-notebook-field-wide">
+          <%= form.label :password_confirmation, "Confirme a nova senha", class: "form-label" %>
+          <%= form.password_field :password_confirmation, class: "form-control", required: true, autocomplete: "new-password", maxlength: 72 %>
+        </div>
+      </div>
+      <div class="app-notebook-form-actions app-auth-actions">
+        <%= form.button type: "submit", class: "app-notebook-button app-save-stamp app-save-stamp--record",
+            data: { turbo_submits_with: "Salvando…" } do %>
+          <span class="app-save-seal" aria-hidden="true"><i class="bi bi-check2"></i></span> Salvar nova senha
+        <% end %>
+      </div>
+    <% end %>
+
+    <footer class="app-auth-footer">
+      <%= link_to "Voltar para entrar", new_session_path, class: "app-auth-link" %>
+    </footer>
+  </div>
+</main>

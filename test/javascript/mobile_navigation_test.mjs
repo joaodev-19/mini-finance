@@ -10,6 +10,48 @@ function controller(name, dependencies = {}) {
   return new Function("Controller", ...Object.keys(dependencies), source)(class {}, ...Object.values(dependencies))
 }
 
+test("filter popup fits a short desktop viewport and clears its bounds in mobile flow", () => {
+  const FilterPanel = controller("filter_panel")
+  const instance = new FilterPanel()
+  const classes = new Set()
+  const properties = new Map()
+  const query = { matches: false }
+  globalThis.window = { matchMedia: () => query, innerHeight: 600 }
+  const menu = {
+    classList: { add: name => classes.add(name), remove: name => classes.delete(name) },
+    style: { setProperty: (key, value) => properties.set(key, value), removeProperty: key => properties.delete(key) },
+    getBoundingClientRect: () => ({ top: 260, height: 334 })
+  }
+  instance.element = { open: true, querySelector: () => menu }
+  instance.fit()
+  assert.equal(classes.has("app-notebook-filter-menu--constrained"), true)
+  assert.equal(properties.get("--notebook-filter-max-height"), "324px")
+  window.innerHeight = 900
+  instance.fit()
+  assert.equal(classes.size, 0)
+  assert.equal(properties.size, 0)
+  window.innerHeight = 600
+  instance.fit()
+  query.matches = true
+  instance.fit()
+  assert.equal(classes.size, 0)
+  assert.equal(properties.size, 0)
+})
+
+test("Escape closes the filter and returns focus without reaching other dropdown handlers", () => {
+  const FilterPanel = controller("filter_panel")
+  const instance = new FilterPanel()
+  let focused = false
+  let prevented = false
+  let stopped = false
+  instance.element = { open: true, querySelector: () => ({ focus() { focused = true } }) }
+  instance.close({ preventDefault() { prevented = true }, stopPropagation() { stopped = true } })
+  assert.equal(instance.element.open, false)
+  assert.equal(focused, true)
+  assert.equal(prevented, true)
+  assert.equal(stopped, true)
+})
+
 test("page size overlay reveals its choices and updates without navigating until submission", () => {
   const PageSize = controller("page_size")
   const instance = new PageSize()

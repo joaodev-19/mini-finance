@@ -1,11 +1,40 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<% content_for :title, "Entrar | Mini Finance" %>
+<% content_for :body_class, "app-auth-desk" %>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+<main class="app-notebook app-notebook-auth" aria-labelledby="session-title">
+  <div class="app-auth-content">
+    <header class="app-notebook-form-heading">
+      <p class="app-notebook-eyebrow app-paper-label"><i class="bi bi-journal-bookmark" aria-hidden="true"></i> Mini Finance / seu caderno</p>
+      <h1 id="session-title">Abra seu caderno<span aria-hidden="true">.</span></h1>
+      <p class="app-notebook-subtitle">Suas anotações e suas finanças, em um espaço só seu.</p>
+    </header>
 
-<%= link_to "Forgot password?", new_password_path %>
+    <%= render "shared/auth_feedback" %>
+
+    <%= form_with url: session_path, class: "app-notebook-form app-auth-form" do |form| %>
+      <div class="app-notebook-fields">
+        <div class="app-notebook-field app-notebook-field-wide">
+          <%= form.label :email_address, "E-mail", class: "form-label" %>
+          <%= form.email_field :email_address, class: "form-control", required: true, autofocus: true,
+              autocomplete: "username", placeholder: "seu@email.com", value: params[:email_address] %>
+        </div>
+        <div class="app-notebook-field app-notebook-field-wide">
+          <%= form.label :password, "Senha", class: "form-label" %>
+          <%= form.password_field :password, class: "form-control", required: true,
+              autocomplete: "current-password", maxlength: 72 %>
+          <%= link_to "Esqueci minha senha", new_password_path, class: "app-auth-link app-auth-recovery" %>
+        </div>
+      </div>
+      <div class="app-notebook-form-actions app-auth-actions">
+        <%= form.button type: "submit", class: "app-notebook-button app-save-stamp app-save-stamp--record",
+            data: { turbo_submits_with: "Entrando…" } do %>
+          <span class="app-save-seal" aria-hidden="true"><i class="bi bi-unlock"></i></span> Entrar no caderno
+        <% end %>
+      </div>
+    <% end %>
+
+    <footer class="app-auth-footer">
+      <p>Ainda não tem uma conta? <%= link_to "Crie seu caderno", new_registration_path, class: "app-auth-link" %></p>
+    </footer>
+  </div>
+</main>

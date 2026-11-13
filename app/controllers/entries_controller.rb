@@ -3,7 +3,7 @@ class EntriesController < ApplicationController
 
   before_action :set_entry, only: %i[ show edit update destroy ]
   before_action :set_categories, only: %i[index new edit create update]
-  validate :category_belongs_to_user
+  
 
   # GET /entries or /entries.json
   def index
@@ -81,13 +81,5 @@ class EntriesController < ApplicationController
 
     def set_categories
       @categories = Current.user.categories.order(:name)
-    end
-
-    def category_belongs_to_user
-      return if category.nil? || user.nil?
-
-      if category.user_id != user_id
-        errors.add(:category, "não pertence a este usuário")
-      end
     end
 end

@@ -1,0 +1,83 @@
+// Account access shares the notebook paper, fields, dividers and ink seals.
+.app-auth-desk .app-notebook-shell { max-width: 640px; }
+.app-auth-content { max-width: 440px; margin-inline: auto; }
+.app-notebook-auth .app-notebook-form-heading h1 { font-size: 2.5rem; line-height: 1.15; }
+.app-auth-form .app-notebook-fields { gap: 20px; }
+.app-auth-actions { margin-top: var(--note-space-lg); padding-top: var(--note-space-md); }
+.app-auth-actions .app-notebook-button { width: 100%; min-height: 52px; font-size: .875rem; }
+
+.app-auth-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--note-space-sm);
+  min-height: 44px;
+  color: var(--note-accent);
+  font-size: .875rem;
+  text-underline-offset: 4px;
+
+  &:hover { color: var(--note-accent-hover); }
+}
+
+.app-auth-recovery { margin-top: var(--note-space-xs); }
+.app-auth-footer {
+  margin-top: var(--note-space-lg);
+  padding-top: var(--note-space-md);
+  border-top: 1px solid var(--note-line);
+  color: var(--note-muted);
+  font-size: .875rem;
+  line-height: 1.6;
+
+  p { margin: 0; }
+}
+
+// The closing bookmark occupies the opposite corner from the section tabs.
+.app-notebook-tabs--account {
+  left: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--note-space-md);
+}
+
+.app-notebook-account { flex: none; margin: 0; }
+.app-notebook-signout {
+  margin: 0;
+  border: 0;
+  font-family: var(--bs-font-sans-serif);
+  font-size: .8rem;
+  cursor: pointer;
+  transition: transform 180ms ease;
+
+  &:focus-visible { outline: 3px solid var(--note-accent); outline-offset: 3px; }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .app-notebook-signout:hover { transform: translateY(-5px); }
+
+  // Move the whole bookmark, just like the tabs, instead of sliding its contents sideways.
+  .app-notebook-signout:hover::before,
+  .app-notebook-signout:hover .app-action-content { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-notebook-signout { transition: none; }
+}
+
+@media (max-width: 991.98px) {
+  .app-auth-desk .app-notebook-shell { margin-inline: auto; }
+  .app-notebook-auth .app-notebook-form-heading h1 { font-size: 2rem; }
+  .app-notebook-tabs.app-notebook-tabs--account {
+    inset: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--note-space-xs);
+  }
+  .app-notebook-account { align-self: flex-end; }
+  .app-notebook-tabs--access .app-notebook-tabs-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-notebook-signout { font-size: .875rem; }
+}
+
+@media (forced-colors: active) {
+  .app-auth-link { color: LinkText; }
+  .app-notebook-signout { border: 1px solid ButtonText; }
+}

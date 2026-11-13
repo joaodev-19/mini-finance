@@ -4,7 +4,14 @@
 
   > summary { list-style: none; }
   > summary::-webkit-details-marker { display: none; }
-  > .app-notebook-filter-menu { inset: 100% 0 auto auto; }
+  > .app-notebook-filter-menu { position: absolute; inset: 100% 0 auto auto; z-index: var(--bs-dropdown-zindex, 1000); }
+  > .app-notebook-filter-menu--constrained {
+    max-height: var(--notebook-filter-max-height);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    &::after { content: none; }
+  }
   &[open] > .app-notebook-filter-menu { display: block; }
   &[open] > summary::after { transform: rotate(180deg); }
 }
