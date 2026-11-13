@@ -6,7 +6,10 @@ class EntriesController < ApplicationController
 
   # GET /entries or /entries.json
   def index
-    @entries = Entry.includes(:category).order(occurred_on: :desc, id: :desc)
+    @entries = Current.user.entries
+                           .includes(:category)
+                           .order(occurred_on: :desc, id: :desc)
+
     @entries = @entries.filter_by_title(params[:search]) if params[:search].present?
     @entries = @entries.filter_by_category(params[:category]) if params[:category].present?
     @entries = @entries.filter_by_kind(params[:kind]) if params[:kind].present?
@@ -67,7 +70,7 @@ class EntriesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_entry
-      @entry = Entry.find(params.expect(:id))
+      @entry = Current.user.entries.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
