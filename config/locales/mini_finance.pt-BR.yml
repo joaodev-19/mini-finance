@@ -1,0 +1,88 @@
+pt-BR:
+  messages:
+    sessions:
+      invalid_credentials: "E-mail ou senha incorretos. Confira os dados e tente novamente."
+      too_many_attempts: "Muitas tentativas de acesso. Aguarde 3 minutos e tente novamente."
+    registrations:
+      created: "Sua conta foi criada. Seu caderno está pronto para a primeira anotação."
+      too_many_attempts: "Muitas tentativas de cadastro. Aguarde 3 minutos e tente novamente."
+    passwords:
+      too_many_attempts: "Muitas solicitações de recuperação. Aguarde 3 minutos e tente novamente."
+      instructions_sent: "Se houver uma conta com esse e-mail, você receberá as instruções para criar uma nova senha. Confira também a pasta de spam."
+      updated: "Senha atualizada com sucesso. Entre com a nova senha para acessar seu caderno."
+      required: "Preencha a nova senha e a confirmação para continuar."
+      not_updated: "Não foi possível atualizar a senha. %{errors}."
+      invalid_token: "Este link de recuperação é inválido ou expirou. Solicite um novo link para continuar."
+  passwords_mailer:
+    reset:
+      subject: "Crie uma nova senha para o Mini Finance"
+      introduction: "Recebemos uma solicitação para recuperar o acesso ao seu caderno."
+      instructions: "Use o link abaixo para criar uma nova senha:"
+      action: "Criar nova senha"
+      expiration: "Este link expira em %{duration}."
+      ignore: "Se você não fez esta solicitação, ignore este e-mail. Sua senha permanece a mesma."
+  activerecord:
+    models:
+      user:
+        one: Conta
+        other: Contas
+      session:
+        one: Sessão
+        other: Sessões
+      entry:
+        one: Lançamento
+        other: Lançamentos
+      category:
+        one: Categoria
+        other: Categorias
+    attributes:
+      user:
+        email_address: E-mail
+        password: Senha
+        password_confirmation: Confirmação da senha
+      session:
+        user: Conta
+      entry:
+        title: Título
+        amount: Valor
+        occurred_on: Data do lançamento
+        kind: Tipo do lançamento
+        description: Descrição
+        category: Categoria
+        category_id: Categoria
+        user: Conta
+      category:
+        name: Nome da categoria
+        user: Conta
+        entries: lançamentos
+    errors:
+      models:
+        user:
+          attributes:
+            base:
+              account_limit_reached: "O limite de %{limit} contas foi atingido. Não é possível criar outra conta no momento."
+            email_address:
+              taken: "já está cadastrado"
+            password:
+              too_short: "deve ter pelo menos %{count} caracteres"
+              password_too_long: "é muito longa. Escolha uma senha menor"
+            password_confirmation:
+              confirmation: "não confere com a senha informada"
+        entry:
+          attributes:
+            amount:
+              not_a_number: "deve ser um número"
+              greater_than: "deve ser maior que %{count}"
+            category:
+              required: "deve ser selecionada"
+            user:
+              required: "não foi identificada. Entre novamente para continuar"
+        category:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                has_many: "Não é possível excluir esta categoria enquanto houver lançamentos vinculados"
+            name:
+              taken: "já está em uso nesta conta"
+            user:
+              required: "não foi identificada. Entre novamente para continuar"

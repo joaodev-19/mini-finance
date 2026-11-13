@@ -1,6 +1,5 @@
-<p>
-  You can reset your password on
-  <%= link_to "this password reset page", edit_password_url(@user.password_reset_token) %>.
-
-  This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.
-</p>
+<p><%= t("passwords_mailer.reset.introduction") %></p>
+<p><%= t("passwords_mailer.reset.instructions") %></p>
+<p><%= link_to t("passwords_mailer.reset.action"), edit_password_url(@user.password_reset_token) %></p>
+<p><%= t("passwords_mailer.reset.expiration", duration: distance_of_time_in_words(0, @user.password_reset_token_expires_in)) %></p>
+<p><%= t("passwords_mailer.reset.ignore") %></p>

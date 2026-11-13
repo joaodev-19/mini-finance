@@ -1,6 +1,7 @@
 require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
+  self.fixture_table_names = [ "users" ]
   setup { @user = User.take }
 
   test "new" do
@@ -20,6 +21,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_session_path
     assert_nil cookies[:session_id]
+    follow_redirect!
+    assert_select "[role=alert]", text: "E-mail ou senha incorretos. Confira os dados e tente novamente."
   end
 
   test "destroy" do

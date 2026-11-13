@@ -6,21 +6,22 @@ class RegistrationsController < ApplicationController
   rate_limit to: 5, within: 3.minutes, only: :create,
     with: -> {
       redirect_to new_registration_path,
-        alert: "Muitas tentativas. Aguarde alguns minutos."
+        alert: I18n.t("messages.registrations.too_many_attempts")
     }
 
   def new
     @user = User.new
+    @registration_closed = User.count >= User::MAX_ACCOUNTS
   end
 
   def create
-    @user = User.new(registration_params)
+    @user = User.register(registration_params)
 
-    if @user.save
+    if @user.persisted?
       start_new_session_for(@user)
 
       redirect_to root_path,
-        notice: "Sua conta foi criada com sucesso!"
+        notice: I18n.t("messages.registrations.created")
     else
       render :new, status: :unprocessable_content
     end

@@ -20,68 +20,78 @@
 
     <%= render "shared/auth_feedback" %>
 
-    <%= form_with model: @user,
-                  url: registration_path,
-                  class: "app-notebook-form app-auth-form" do |form| %>
+    <% if @registration_closed %>
+    <p>
+        Todos os cadernos disponíveis já foram reservados.
+        O Mini Finance está fechado para novos cadastros.
+    </p>
 
-      <% if @user.errors.any? %>
-        <div class="app-notebook-errors" role="alert">
-          <p>Não foi possível criar sua conta:</p>
+    <%= link_to "Voltar ao login", new_session_path %>
+    <% else %>
+        <%= form_with model: @user,
+                    url: registration_path,
+                    class: "app-notebook-form app-auth-form" do |form| %>
 
-          <ul>
-            <% @user.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+        <% if @user.errors.any? %>
+            <div class="app-notebook-errors" role="alert">
+            <p>Não foi possível criar sua conta:</p>
 
-      <div class="app-notebook-fields">
-
-        <div class="app-notebook-field app-notebook-field-wide">
-          <%= form.label :email_address, "E-mail",
-              class: "form-label" %>
-
-          <%= form.email_field :email_address,
-              class: "form-control",
-              autocomplete: "email",
-              required: true,
-              placeholder: "seu@email.com" %>
-        </div>
-
-        <div class="app-notebook-field app-notebook-field-wide">
-          <%= form.label :password, "Senha",
-              class: "form-label" %>
-
-          <%= form.password_field :password,
-              class: "form-control",
-              autocomplete: "new-password",
-              minlength: 8,
-              aria: { describedby: "registration-password-help" },
-              required: true %>
-          <p id="registration-password-help" class="app-notebook-field-help">Use pelo menos 8 caracteres.</p>
-        </div>
-
-        <div class="app-notebook-field app-notebook-field-wide">
-          <%= form.label :password_confirmation,
-              "Confirme sua senha",
-              class: "form-label" %>
-
-          <%= form.password_field :password_confirmation,
-              class: "form-control",
-              autocomplete: "new-password",
-              required: true %>
-        </div>
-
-      </div>
-
-      <div class="app-notebook-form-actions app-auth-actions">
-        <%= form.button type: "submit", class: "app-notebook-button app-save-stamp app-save-stamp--record",
-            data: { turbo_submits_with: "Criando…" } do %>
-          <span class="app-save-seal" aria-hidden="true"><i class="bi bi-check2"></i></span> Criar minha conta
+            <ul>
+                <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+                <% end %>
+            </ul>
+            </div>
         <% end %>
-      </div>
+
+        <div class="app-notebook-fields">
+
+            <div class="app-notebook-field app-notebook-field-wide">
+            <%= form.label :email_address, "E-mail",
+                class: "form-label" %>
+
+            <%= form.email_field :email_address,
+                class: "form-control",
+                autocomplete: "email",
+                required: true,
+                placeholder: "seu@email.com" %>
+            </div>
+
+            <div class="app-notebook-field app-notebook-field-wide">
+            <%= form.label :password, "Senha",
+                class: "form-label" %>
+
+            <%= form.password_field :password,
+                class: "form-control",
+                autocomplete: "new-password",
+                minlength: 8,
+                aria: { describedby: "registration-password-help" },
+                required: true %>
+            <p id="registration-password-help" class="app-notebook-field-help">Use pelo menos 8 caracteres.</p>
+            </div>
+
+            <div class="app-notebook-field app-notebook-field-wide">
+            <%= form.label :password_confirmation,
+                "Confirme sua senha",
+                class: "form-label" %>
+
+            <%= form.password_field :password_confirmation,
+                class: "form-control",
+                autocomplete: "new-password",
+                required: true %>
+            </div>
+
+        </div>
+
+        <div class="app-notebook-form-actions app-auth-actions">
+            <%= form.button type: "submit", class: "app-notebook-button app-save-stamp app-save-stamp--record",
+                data: { turbo_submits_with: "Criando…" } do %>
+            <span class="app-save-seal" aria-hidden="true"><i class="bi bi-check2"></i></span> Criar minha conta
+            <% end %>
+        </div>
+        <% end %>
     <% end %>
+
 
     <footer class="app-auth-footer">
       <p>Já tem uma conta? <%= link_to "Abra seu caderno", new_session_path, class: "app-auth-link" %></p>
